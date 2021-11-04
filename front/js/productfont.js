@@ -1,3 +1,4 @@
+
 (async function(){
     const articleId = getArticleId()
     console.log(articleId)
@@ -32,3 +33,37 @@ function hydrateArticle(article){
     <option value="${article.colors[1]}">${article.colors[1]}</option>`
 }
 
+//localStorage.steItem("clé","valeur")
+//localStorage.getItem('clé)
+//json.stringify(objet)
+//json.parse(string)
+//convertir les donnee au format json qui sont dans le localstorage 
+
+const id = getArticleId();
+
+const userSelectArray = [];
+
+const local = JSON.parse(localStorage.getItem("userSelect"));
+
+addToCart.onclick = () =>{
+    
+    console.log(id);
+    const userSelect = {   
+    idProduit:id,
+    colors: colors.value,
+    quantityUser: quantity.value
+    }
+    userSelectArray.push(userSelect);
+
+  localStorage.setItem("storageUserSelect",JSON.stringify(userSelectArray));
+  
+    console.log(userSelectArray);
+    
+}
+
+
+
+
+
+
+ 
