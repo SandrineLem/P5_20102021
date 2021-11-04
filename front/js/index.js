@@ -34,4 +34,3 @@ function displayArticle(article){
     </article></a>`
 }
 // "${}" inclure les donnees du fichier article (json)
-

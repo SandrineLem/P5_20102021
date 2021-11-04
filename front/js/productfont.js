@@ -46,10 +46,9 @@ const userSelectArray = [];
 const local = JSON.parse(localStorage.getItem("userSelect"));
 
 addToCart.onclick = () =>{
-    
-    console.log(id);
+    if (userSelectArray.indexOf(id) === -1){
     const userSelect = {   
-    idProduit:id,
+    idProduit: id,
     colors: colors.value,
     quantityUser: quantity.value
     }
@@ -59,10 +58,10 @@ addToCart.onclick = () =>{
   
     console.log(userSelectArray);
     
+}else{
+    console.log(id);
 }
-
-
-
+}
 
 
 
