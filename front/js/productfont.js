@@ -38,31 +38,61 @@ function hydrateArticle(article){
 //json.stringify(objet)
 //json.parse(string)
 //convertir les donnee au format json qui sont dans le localstorage 
-
 const id = getArticleId();
-
 const userSelectArray = [];
 
-const local = JSON.parse(localStorage.getItem("userSelect"));
+
 
 addToCart.onclick = () =>{
-    if (userSelectArray.indexOf(id) === -1){
-    const userSelect = {   
+    const local = JSON.parse(localStorage.getItem("storageUserSelect"));// recuperer les donner dans le local
+      
+    if  (local.findIndex(x=>x.idProduit === id)=== -1) {   // ERREUR DANS LE IF ? 
+        let userSelect = {   // ajouter l'objet userSelect avec id , colors , quantityUser
+        idProduit: id,
+        colors: colors.value,
+        quantityUser: quantity.value
+        } 
+        local.push(userSelect); // envoyer les info "userSelect" dans le local 
+          
+            
+    }else{// si le produit existe
+        let index = local.findIndex(x=>x.idProduit === id);//chercher la valeur
+          
+        localStorage.setItem("storageUserSelect",JSON.stringify(local));//sous forme d'objet
+        local[index].quantityUser = parseInt(local[index].quantityUser) + 2;//convertir la chaine de caractère "string" en nombre
+        console.log(local[index].quantityUser)
+        localStorage.setItem("storageUserSelect",JSON.stringify(local));   
+    }
+    /*if (userSelectArray.findIndex(x=> x.idProduit === id ) === -1){
+    let userSelect = {   
     idProduit: id,
     colors: colors.value,
     quantityUser: quantity.value
-    }
+    } 
     userSelectArray.push(userSelect);
 
   localStorage.setItem("storageUserSelect",JSON.stringify(userSelectArray));
   
     console.log(userSelectArray);
+}else if (userSelectArray.findIndex(x=>x.colors), userSelectArray.findIndex(x=>x.idProduit) > -1) {
+    //si meme couleur et meme id alors ..
+    //nommer la nouvelle valeur 
+    let newUserSelect = userSelectArray.splice(x=>x.quantityUser)
+    console.log(newUserSelect);
+ }else {
+    console.log(id); 
+ } 
+ local.findIndex (x=>x.idProduit === id)
+*/
+}     
+
     
-}else{
-    console.log(id);
-}
-}
 
 
 
- 
+    
+      
+
+
+
+
