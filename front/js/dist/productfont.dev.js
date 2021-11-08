@@ -80,7 +80,9 @@ addToCart.onclick = function () {
     };
     local.push(userSelect); // envoyer les info "userSelect" dans le local 
 
-    localStorage.setItem("storageUserSelect", JSON.stringify(local)); //ajout de l'ojet(clé , valeur) dans le local 
+    localStorage.setItem("storageUserSelect", JSON.stringify(local)); //ajout de l'ojet(clé , valeur) dans le local
+
+    console.log(local); //afficher le local   
   } else {
     // si le produit existe
     var index = local.findIndex(function (x) {
@@ -96,29 +98,9 @@ addToCart.onclick = function () {
         colors: colors.value,
         quantityUser: quantity.value
       };
-      local.push(_userSelect);
+      local.push(_userSelect); // envoyer les info "userSelect" dans le local   
     }
 
-    localStorage.setItem("storageUserSelect", JSON.stringify(local));
+    localStorage.setItem("storageUserSelect", JSON.stringify(local)); //ajout de l'ojet(clé , valeur) dans le local
   }
 };
-/*if (userSelectArray.findIndex(x=> x.idProduit === id ) === -1){
-   let userSelect = {   
-   idProduit: id,
-   colors: colors.value,
-   quantityUser: quantity.value
-   } 
-   userSelectArray.push(userSelect);
-  localStorage.setItem("storageUserSelect",JSON.stringify(userSelectArray));
- 
-   console.log(userSelectArray);
-}else if (userSelectArray.findIndex(x=>x.colors), userSelectArray.findIndex(x=>x.idProduit) > -1) {
-   //si meme couleur et meme id alors ..
-   //nommer la nouvelle valeur 
-   let newUserSelect = userSelectArray.splice(x=>x.quantityUser)
-   console.log(newUserSelect);
-}else {
-   console.log(id); 
-} 
-local.findIndex (x=>x.idProduit === id)
-*/
