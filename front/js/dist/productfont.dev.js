@@ -15,7 +15,7 @@
           article = _context.sent;
           console.log(article);
           hydrateArticle(article);
-          verifLacoalStorage(); // Ajout de la fonction verification du localStorage
+          verifLocalStorage(); // Ajout de la fonction verification du localStorage
 
         case 8:
         case "end":
@@ -29,7 +29,7 @@ function getArticleId() {
   return new URL(location.href).searchParams.get("id");
 }
 
-function verifLacoalStorage() {
+function verifLocalStorage() {
   // Ajouter les instruction pour la fonction verifLocalStorage
   var local = JSON.parse(localStorage.getItem("storageUserSelect"));
 
@@ -56,7 +56,7 @@ function getArticle(articleId) {
 }
 
 function hydrateArticle(article) {
-  document.getElementById("item_img").innerHTML += "<img src=\"".concat(article.imageUrl, "\" alt=\"Photographie d'un canap\xE9\">");
+  document.getElementById("item_img").innerHTML += "<img src=\"".concat(article.imageUrl, "\" alt=\"").concat(article.altTxt, "\">");
   document.getElementById("title").textContent = "".concat(article.name);
   document.getElementById("price").textContent = "".concat(article.price);
   document.getElementById("description").textContent = "".concat(article.description);

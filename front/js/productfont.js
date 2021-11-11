@@ -2,15 +2,16 @@
 (async function(){
     const articleId = getArticleId()
     console.log(articleId)
-    const article = await getArticle(articleId)
+    const article = await getArticle(articleId);
     console.log(article)
     hydrateArticle(article)
-    verifLacoalStorage();// Ajout de la fonction verification du localStorage
+    verifLocalStorage();// Ajout de la fonction verification du localStorage
 })()
 function getArticleId(){
     return new URL (location.href).searchParams.get("id")
 }
-function verifLacoalStorage(){ // Ajouter les instruction pour la fonction verifLocalStorage
+
+function verifLocalStorage(){ // Ajouter les instruction pour la fonction verifLocalStorage
     const local = JSON.parse(localStorage.getItem("storageUserSelect"))
     if (local == null){ // si il renvoie null 
         localStorage.setItem("storageUserSelect", JSON.stringify([]));
@@ -24,7 +25,7 @@ function getArticle(articleId){
         return httpBodyResponse.json() // transfromation de httpBody  en json 
     })
     .then(function(articles){ // recuperer le json renommé en "articles"
-        return articles        // reponse return le contenu json "articles"
+        return articles;        // reponse return le contenu json "articles"
     })
     .catch(function(error){    // si erreur fonction d'afficher une alert 'error' 
         alert(error)
@@ -32,10 +33,11 @@ function getArticle(articleId){
 }
 
 
-function hydrateArticle(article){
+
+ function hydrateArticle(article){
     
     document.getElementById("item_img")
-     .innerHTML += `<img src="${article.imageUrl}" alt="Photographie d'un canapé">`;
+     .innerHTML += `<img src="${article.imageUrl}" alt="${article.altTxt}">`;
     document.getElementById("title").textContent = `${article.name}`;
     document.getElementById("price").textContent =`${article.price}`;
     document.getElementById("description").textContent = `${article.description}`;
@@ -46,9 +48,10 @@ function hydrateArticle(article){
 
 const id = getArticleId();
 
+
 addToCart.onclick = () =>{
     const local = JSON.parse(localStorage.getItem("storageUserSelect"));// recuperer les donner dans le local
-      
+     
     if  (local.findIndex((x) => (x).idProduit === id) === -1) {   //si le produit existe pas 
         let userSelect = {   // ajouter l'objet userSelect avec id , colors , quantityUser
         idProduit: id,
@@ -76,12 +79,3 @@ addToCart.onclick = () =>{
         localStorage.setItem("storageUserSelect", JSON.stringify(local));//ajout de l'ojet(clé , valeur) dans le local
 }    
 };
-
- 
-
-    
-      
-
-
-
-
