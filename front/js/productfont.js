@@ -47,7 +47,7 @@ function getArticle(articleId){
 
 
 const id = getArticleId();
-
+console.log(id)
 
 addToCart.onclick = () =>{
     const local = JSON.parse(localStorage.getItem("storageUserSelect"));// recuperer les donner dans le local
@@ -63,7 +63,7 @@ addToCart.onclick = () =>{
         console.log(local);//afficher le local   
     }else{// si le produit existe
         let index = local.findIndex((x) => (x).idProduit === id);//chercher la valeur
-   
+        
         if (local[index].colors === colors.value){ 
            local[index].quantityUser = 
            parseInt(local[index].quantityUser) + parseInt(quantity.value);//"parseInt" => convertir la chaine de caractere en number 
@@ -79,3 +79,5 @@ addToCart.onclick = () =>{
         localStorage.setItem("storageUserSelect", JSON.stringify(local));//ajout de l'ojet(clé , valeur) dans le local
 }    
 };
+
+

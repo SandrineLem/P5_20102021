@@ -64,6 +64,7 @@ function hydrateArticle(article) {
 }
 
 var id = getArticleId();
+console.log(id);
 
 addToCart.onclick = function () {
   var local = JSON.parse(localStorage.getItem("storageUserSelect")); // recuperer les donner dans le local
