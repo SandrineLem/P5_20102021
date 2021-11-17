@@ -40,7 +40,7 @@
           articleLocal = _context.sent;
           //puis recuperer la function get article pour api id en lien avec l'id dans le local 
           console.log(articleLocal);
-          document.getElementById("cart__items").innerHTML += "<article class=\"cart__item\" data-id=\"".concat(idLocal, "\">\n        <div class=\"cart__item__img\">\n          <img src=\"").concat(articleLocal.imageUrl, "\" alt=\"").concat(articleLocal.altTxt, "\">\n        </div>\n        <div class=\"cart__item__content\">\n          <div class=\"cart__item__content__titlePrice\">\n            <h2>").concat(articleLocal.name, "</h2>\n            <p>").concat(articleLocal.price, "\u20AC</p>\n          </div>\n          <div class=\"cart__item__content__settings\">\n            <div class=\"cart__item__content__settings__quantity\">\n              <p>Qt\xE9 :").concat(local[y].quantityUser, " </p>\n              <input type=\"number\" class=\"itemQuantity\" name=\"itemQuantity\" min=\"1\" max=\"100\" value=\"").concat(local[y].quantityUser, "\">\n            </div>\n            <div class=\"cart__item__content__settings__delete\">\n              <p class=\"deleteItem\" onClick=supprimerProduit((idLocal))>Supprimer</p>\n            </div>\n          </div>\n        </div>\n      </article>");
+          document.getElementById("cart__items").innerHTML += "<article class=\"cart__item\" data-id=\"".concat(idLocal, "\">\n        <div class=\"cart__item__img\">\n          <img src=\"").concat(articleLocal.imageUrl, "\" alt=\"").concat(articleLocal.altTxt, "\">\n        </div>\n        <div class=\"cart__item__content\">\n          <div class=\"cart__item__content__titlePrice\">\n            <h2>").concat(articleLocal.name, "</h2>\n            <p>").concat(articleLocal.price, "\u20AC</p>\n          </div>\n          <div class=\"cart__item__content__settings\">\n            <div class=\"cart__item__content__settings__quantity\">\n              <p>Qt\xE9 :").concat(local[y].quantityUser, " </p>\n              <input type=\"number\" class=\"itemQuantity\" name=\"itemQuantity\" min=\"1\" max=\"100\" value=\"").concat(local[y].quantityUser, "\">\n            </div>\n            <div class=\"cart__item__content__settings__delete\">\n              <p class=\"deleteItem\" onClick=\"supprimerProduit('").concat(idLocal, "')\">Supprimer</p>\n            </div>\n          </div>\n        </div>\n      </article>");
 
         case 15:
           y++;
@@ -68,8 +68,38 @@ function getArticle(articleId) {
     // si erreur fonction d'afficher une alert 'error' 
     alert(error);
   });
-}
+} //creer une fonction pour supprimer id dans le local
+
 
 function supprimerProduit(idArticleSupprimer) {
-  console.log(idArticleSupprimer);
+  console.log(idArticleSupprimer); // recuperer les donner dans le local
+
+  var local = JSON.parse(localStorage.getItem("storageUserSelect")); //selectionner les donnees des boutons supprimer
+
+  var btnSupprimerPanier = document.getElementsByClassName("cart__item");
+  console.log(btnSupprimerPanier);
+
+  var _loop = function _loop(i) {
+    btnSupprimerPanier[i].addEventListener("click", function (event) {
+      event.preventDefault(); //Aller chercher l'id du produit dans le tableau 
+
+      var produitSelectionne = btnSupprimerPanier[i].closest("article");
+      var idProduitSelectione = produitSelectionne.dataset.id;
+      console.log(idProduitSelectione); //recuperer les données du local 
+
+      var local = JSON.parse(localStorage.getItem("storageUserSelect")); //appliquer un filtre dans le local
+
+      local = local.filter(function (elemt) {
+        return elemt.idProduit !== idProduitSelectione;
+      }); //mettre a jour les données renvoyées dans le local 
+
+      localStorage.setItem("storageUserSelect", JSON.stringify(local)); //ajout de l'ojet(clé , valeur) dans le local
+
+      console.log(local);
+    });
+  };
+
+  for (var i = 0; i < btnSupprimerPanier.length; i++) {
+    _loop(i);
+  }
 }
