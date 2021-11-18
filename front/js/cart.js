@@ -6,7 +6,7 @@
   //si le panier est vide 
   if (local === null){
   console.log("le panier est vide")
-}else{//si le panier n'est pas vide l'afficher dans le local storage 
+  }else{//si le panier n'est pas vide l'afficher dans le local storage 
 
     for (y = 0; y < local.length; y++){//faire une boucle sur le local storage
         const idLocal = local[y].idProduit;//recup l'id dans local  
@@ -26,7 +26,7 @@
           <div class="cart__item__content__settings">
             <div class="cart__item__content__settings__quantity">
               <p>Qté :${local[y].quantityUser} </p>
-              <input type="number" class="itemQuantity" name="itemQuantity" min="1" max="100" value="${local[y].quantityUser}">
+              <input type="number" class="itemQuantity" onClick="modifQuantitePanier ()" "name="itemQuantity" min="1" max="100" value="${local[y].quantityUser}">
             </div>
             <div class="cart__item__content__settings__delete">
               <p class="deleteItem" onClick="supprimerProduit('${idLocal}')">Supprimer</p>
@@ -34,10 +34,9 @@
           </div>
         </div>
       </article>`;
-    }
-}
-  
-  
+       
+    } 
+} 
 })()
 
 
@@ -55,6 +54,37 @@ function getArticle(articleId){
   });
 }
 
+//creer une fonction pour modifier la quantité de produit dans la page panier 
+function modifQuantitePanier (){
+ // recuperer les donner dans le local
+  const local = JSON.parse(localStorage.getItem("storageUserSelect"));
+
+//selectionner les donnees des boutons quantite
+  let elmtQuantite = document.querySelectorAll(".itemQuantity");
+  console.log(elmtQuantite)
+  elmtQuantite.forEach((quantiteModif)=> {
+//recup la donnee du id et de la quantite 
+   let produitQuantite = quantiteModif.closest("article");
+   let produitQuantiteId = produitQuantite.dataset.id;
+   console.log(produitQuantiteId);
+//utilisation de  l'observation avec addEventListener pour voir le changement de la quantité
+  quantiteModif.addEventListener("change", () => {
+//recup de la valeur de la quantite changee 
+    let newsQuantiteProduit = Number(quantiteModif.value);
+    console.log(newsQuantiteProduit)
+//utiliser le local cette fois si pour le mettre a jour de la nouvelle quantite 
+      local.forEach((ElemtNew)=> { 
+         if (ElemtNew.idProduit === produitQuantiteId){
+          ElemtNew.quantityUser = newsQuantiteProduit;
+          } 
+        });
+//mettre a jour les données renvoyées dans le local       
+  localStorage.setItem("storageUserSelect", JSON.stringify(local));//ajout de l'ojet(clé , valeur) dans le local
+  window.location.reload();
+    })
+
+  })
+}
 
 
 
@@ -72,14 +102,15 @@ console.log(btnSupprimerPanier);
       event.preventDefault();
 
       //Aller chercher l'id du produit dans le tableau 
+      // voir pour rajouter la couleur du produit pour recuperer la couleur du produit ? 
       let produitSelectionne = btnSupprimerPanier[i].closest("article");
       let idProduitSelectione = produitSelectionne.dataset.id;
       console.log(idProduitSelectione)
       //recuperer les données du local 
       let local = JSON.parse(localStorage.getItem("storageUserSelect"));
     
-      //appliquer un filtre dans le local
-      local = local.filter(elemt => elemt.idProduit !== idProduitSelectione);
+      //appliquer un filtre dans le local (voir pour rajouter la couleur dans le filtre)
+      local = local.filter(elemt => elemt.idProduit !== idProduitSelectione );
       
       //mettre a jour les données renvoyées dans le local 
       localStorage.setItem("storageUserSelect", JSON.stringify(local));//ajout de l'ojet(clé , valeur) dans le local
@@ -87,4 +118,38 @@ console.log(btnSupprimerPanier);
     }) 
   } 
 }
-  
+//Total calcul du "nombre d'articles" dans le panier
+
+//creer un tableau
+let quantiteProduitTotal = [];
+//recupere les donnees du local 
+const local = JSON.parse(localStorage.getItem("storageUserSelect"));
+//condition ( si , sinon )
+//le panier est vide ou egale à 0 alors tu affiches "Votre panier est vide"
+if (local=== null || local === 0){
+  alert("Votre panier est vide");
+}else{
+for (let article of local){
+  let quantiteArticle =+ article.quantityUser;
+  //j'envoie les donnees dans mon tableau
+  quantiteProduitTotal.push(quantiteArticle);
+  console.log(quantiteProduitTotal);//affiche bien la quantite de chaque produit  
+}
+//faire une addition des quantitees des produits recuperer dans le total pour avoir le nombre total 
+//Utiliser la methode reduce pour accumuler les donnees du tableau 
+const reducer = (previousValue, currentValue) => previousValue + currentValue;
+//ajouter la donnees dan smon tableau 
+let quantiteTotalCalculePanier = quantiteProduitTotal.reduce(reducer);
+//utiliser le DOM pour ajouter ma vaviable contenant la quantite calculé des produits  au HTML 
+document.getElementById("totalQuantity").innerHTML = quantiteTotalCalculePanier;
+} 
+
+
+
+
+
+
+
+
+
+
