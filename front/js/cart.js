@@ -7,12 +7,15 @@
   if (local === null){
   console.log("le panier est vide")
   }else{//si le panier n'est pas vide l'afficher dans le local storage 
-
+//  
+    
+  
     for (y = 0; y < local.length; y++){//faire une boucle sur le local storage
         const idLocal = local[y].idProduit;//recup l'id dans local  
         console.log(idLocal)
         const articleLocal = await getArticle(idLocal)//puis recuperer la function get article pour api id en lien avec l'id dans le local 
         console.log(articleLocal);
+      
         document.getElementById("cart__items").innerHTML +=  
         `<article class="cart__item" data-id="${idLocal}">
         <div class="cart__item__img">
@@ -34,8 +37,26 @@
           </div>
         </div>
       </article>`;
-       
+    //afficher prix total par produit 
+      /*recuperer le prix du produit
+      ????ATTENTION VOIR AVEC TERRENCE 
+       ??Probleme celà ne m'affiche plus qu'un produit dans le panier???*/
+      
+      let prixPorduit = articleLocal.price;
+      console.log(prixPorduit)
+      //boucle pour parcourir le tableau des quantites produits dans le panier  
+      for(y = 0; y < quantiteProduitTotal.length; y++){
+        //stoquer la quantite du produit 
+        let quantiteprixProduit = quantiteProduitTotal[y];
+        //creer une variable prix total par produit 
+        let prixTotalProduit = prixPorduit * quantiteprixProduit;
+      console.log(prixTotalProduit)
+      let prixTotalPanier = 0; 
+      prixTotalPanier = (prixTotalPanier + prixTotalProduit);
+      console.log(prixTotalPanier)
+      }
     } 
+    
 } 
 })()
 
@@ -53,6 +74,10 @@ function getArticle(articleId){
       alert(error)
   });
 }
+
+
+
+
 
 //creer une fonction pour modifier la quantité de produit dans la page panier 
 function modifQuantitePanier (){
@@ -85,7 +110,6 @@ function modifQuantitePanier (){
 
   })
 }
-
 
 
 
@@ -125,7 +149,7 @@ let quantiteProduitTotal = [];
 //recupere les donnees du local 
 const local = JSON.parse(localStorage.getItem("storageUserSelect"));
 //condition ( si , sinon )
-//le panier est vide ou egale à 0 alors tu affiches "Votre panier est vide"
+//le panier est vide et ou egale à 0 alors tu affiches "Votre panier est vide"
 if (local=== null || local === 0){
   alert("Votre panier est vide");
 }else{
@@ -143,6 +167,7 @@ let quantiteTotalCalculePanier = quantiteProduitTotal.reduce(reducer);
 //utiliser le DOM pour ajouter ma vaviable contenant la quantite calculé des produits  au HTML 
 document.getElementById("totalQuantity").innerHTML = quantiteTotalCalculePanier;
 } 
+
 
 
 
