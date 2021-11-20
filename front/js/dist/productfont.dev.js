@@ -59,49 +59,55 @@ function hydrateArticle(article) {
   document.getElementById("item_img").innerHTML += "<img src=\"".concat(article.imageUrl, "\" alt=\"").concat(article.altTxt, "\">");
   document.getElementById("title").textContent = "".concat(article.name);
   document.getElementById("price").textContent = "".concat(article.price);
-  document.getElementById("description").textContent = "".concat(article.description);
-  document.getElementById("colors").innerHTML += "<option value=\"".concat(article.colors[0], "\">").concat(article.colors[0], "</option> \n    <option value=\"").concat(article.colors[1], "\">").concat(article.colors[1], "</option>");
+  document.getElementById("description").textContent = "".concat(article.description); //Ajout de la boucle for recuperer la couleur 
+
+  for (var i = 0; i < article.colors.length; i++) {
+    document.getElementById("colors").innerHTML += "<option value=\"".concat(article.colors[i], "\">").concat(article.colors[i], "</option>");
+  }
 }
 
 var id = getArticleId();
 console.log(id);
 
 addToCart.onclick = function () {
-  var local = JSON.parse(localStorage.getItem("storageUserSelect")); // recuperer les donner dans le local
+  // recuperer les donner dans le local
+  var local = JSON.parse(localStorage.getItem("storageUserSelect"));
+  console.log(id); //si le produit existe pas  
 
   if (local.findIndex(function (x) {
     return x.idProduit === id;
   }) === -1) {
-    //si le produit existe pas 
+    // ajouter l'objet userSelect avec id , colors , quantityUser  
     var userSelect = {
-      // ajouter l'objet userSelect avec id , colors , quantityUser
       idProduit: id,
       colors: colors.value,
-      quantityUser: quantity.value
-    };
-    local.push(userSelect); // envoyer les info "userSelect" dans le local 
+      quantityUser: parseInt(quantity.value)
+    }; // envoyer les info "userSelect" dans le local
 
-    localStorage.setItem("storageUserSelect", JSON.stringify(local)); //ajout de l'ojet(clé , valeur) dans le local
+    local.push(userSelect); //mettre a jour le local   
 
-    console.log(local); //afficher le local   
+    localStorage.setItem("storageUserSelect", JSON.stringify(local)); //afficher le local
+
+    console.log(local); // si le produit existe   
   } else {
-    // si le produit existe
+    //si le produit existe  
     var index = local.findIndex(function (x) {
-      return x.idProduit === id;
+      return x.idProduit === id && x.colors === colors.value;
     }); //chercher la valeur
 
-    if (local[index].colors === colors.value) {
-      local[index].quantityUser = parseInt(local[index].quantityUser) + parseInt(quantity.value); //"parseInt" => convertir la chaine de caractere en number 
-    } else {
+    if (index === -1) {
       var _userSelect = {
-        // ajout de l'objet userSelect avec l id, colors , quantityUser
         idProduit: id,
         colors: colors.value,
-        quantityUser: quantity.value
-      };
-      local.push(_userSelect); // envoyer les info "userSelect" dans le local   
-    }
+        quantityUser: parseInt(quantity.value)
+      }; //envoyer les info 'userSelect" dans le local (id colors quantity)
 
-    localStorage.setItem("storageUserSelect", JSON.stringify(local)); //ajout de l'ojet(clé , valeur) dans le local
+      local.push(_userSelect);
+    } else {
+      local[index].quantityUser = parseInt(local[index].quantityUser + parseInt(quantity.value));
+    } //ajout de l'ojet(clé , valeur) dans le local
+
+
+    localStorage.setItem("storageUserSelect", JSON.stringify(local));
   }
 };

@@ -119,18 +119,19 @@ function modifQuantitePanier() {
 
 
 function supprimerProduit(idArticleSupprimer, colors) {
-  //recup donnees local 
+  console.log(colors); //recup donnees local 
   // attention changer const en let pour pouvoir modifier les valeur dans la variable 
+
   var local = JSON.parse(localStorage.getItem("storageUserSelect")); //boucle pour parcourir le local 
 
   for (var i = 0; i < local.length; i++) {
     //condition ( si id = id à supprimer et couleur du produit = couleur à supprimer )
-    if (local[i].idProduit == idArticleSupprimer && local[i].colors == colors) {
-      //le changer egalement dans le local  
-      local = local.filter(function (elemt) {
-        return elemt.idProduit == idArticleSupprimer && elemt.colors == colors;
-      }); //mettre à jour le local 
+    var index = local.findIndex(function (elmt) {
+      return elmt.idProduit === idArticleSupprimer && elmt.colors === colors;
+    });
 
+    if (index !== -1) {
+      local.splice(index, 1);
       localStorage.setItem("storageUserSelect", JSON.stringify(local));
     }
   } //rechargement de la page 
