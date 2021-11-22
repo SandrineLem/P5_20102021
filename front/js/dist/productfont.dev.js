@@ -27,23 +27,23 @@
 
 function getArticleId() {
   return new URL(location.href).searchParams.get("id");
-}
+} // ------Ajouter les instruction pour la fonction verifLocalStorage------
+
 
 function verifLocalStorage() {
-  // Ajouter les instruction pour la fonction verifLocalStorage
   var local = JSON.parse(localStorage.getItem("storageUserSelect"));
 
   if (local == null) {
-    // si il renvoie null 
+    // --si il renvoie null-- 
     localStorage.setItem("storageUserSelect", JSON.stringify([]));
-    /* alors tu recup les donner du storage
-     et converti en json dans un tableau*/
+    /* alors recup des donnees du storage
+     et convertir en json dans un tableau*/
   }
-}
+} //recuperation des donnees de l'api avec id de chaque produit
+
 
 function getArticle(articleId) {
-  return fetch("http://localhost:3000/api/products/".concat(articleId)) //recuperation des donnees de l'api avec id de chaque produit
-  .then(function (httpBodyResponse) {
+  return fetch("http://localhost:3000/api/products/".concat(articleId)).then(function (httpBodyResponse) {
     // fonction quand il recupere les donnees en httpBody
     return httpBodyResponse.json(); // transfromation de httpBody  en json 
   }).then(function (articles) {
@@ -53,7 +53,8 @@ function getArticle(articleId) {
     // si erreur fonction d'afficher une alert 'error' 
     alert(error);
   });
-}
+} // ------fonction pour ajouter dans le dom les infos produits-----
+
 
 function hydrateArticle(article) {
   document.getElementById("item_img").innerHTML += "<img src=\"".concat(article.imageUrl, "\" alt=\"").concat(article.altTxt, "\">");
