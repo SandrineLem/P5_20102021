@@ -137,4 +137,138 @@ function supprimerProduit(idArticleSupprimer, colors) {
 }
 
 //------------------------------Fonction du formulaire------------------------------ 
+// ----recuperer les donner dans le local----
+const local = JSON.parse(localStorage.getItem("storageUserSelect"));
+//------recuperer les donnees saisies par l'utilisateur dans le formulaire -----
+//--Recuperer le bouton envoie des info du formulaire --
+let btnFormEnvoie = document.querySelector("#order");
+//-- Ecoute du bouton d'envoie du formulaire --
+btnFormEnvoie.addEventListener("click", (event) =>{
+  event.preventDefault();
+})
+//--Créer un "objet "formulaire" pour stocker les donnees du formulaire----
+ class formulaire {
+   constructor(){
+     this.prenom = document.querySelector("#firstName").value;
+     this.nom = document.querySelector("#lastName").value;
+     this.adresse = document.querySelector("#address").value;
+     this.ville = document.querySelector("#city").value;
+     this.email = document.querySelector("#email").value;
+   }  
+ }
+ //instance pour creer l'objet contact 
+ const contact = new formulaire ();
+//---Creer une "tableau de produit" à partir du local recup les info avec l'id 
 
+let tabProduitId = [];
+for(let i = 0; i < local.length; i++){
+  tabProduitId.push(local[i].idProduit);
+}
+console.log(tabProduitId)
+
+//--------Analyser les donnees saisies par l'utilisateur dans le formulaire ---
+//-----utiliser la methode regExp pour creer des expressions regulières ---
+
+//--creation regExp pour ( que du texte ) ( prenom , nom)
+/*explication = ok -> minuscule , majuscule , accent speciaux sur lettre 
+majuscule et minuscule , ok -> .'- ok -> minumum 2 caractere jusqu'a max 20
+*/
+const regExPrenomNom  = (value) => {
+  return /^[a-zA-ZÀ-ÿ ,.'-]{2,20}$/.test(value)
+}
+
+//--creation regExp pour ( text + number ) (adresse)
+const regExValidAdresse = (value) => {
+  return /^([a-zA-ZÀ-ÿ,-. ]{1,}|[0-9]{1,4})[ ].{1,}$/.test(value)
+}
+
+//--creation regExp pour ( que du texte ) ( ville)
+/* idem au (nom prenom) mais accetpte minimum 3 caracteres pour les villes ( car il 
+  existe pas de ville en France en 2 lettres*/
+  const regExValidVille  = (value) => {
+    return /^[a-zA-ZÀ-ÿ ,.'-]{3,20}$/.test(value)
+  }
+
+
+//--creation regExp pour email
+/*--explication regExp ^ = debut caracteres accepté 1 ere partie => lettre minuscule ou majusclule ou 0 jusqu'a 9
+ok pour des . - _ et je peux en ecrire plusieurs fois dans le debut du mail 
+retrouver un @ une seul fois puis  2eme partie de l'email ( meme chose que la 1ere)
+Ensuite 3eme partie notifie qu'1 seul . 4eme partie minuscule a-z de 2lettres jusqu'a 10 max
+$ fin de l'expression   
+*/ 
+const regExValidEmail  = (value) => {
+  return /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/.test(value)
+}
+
+
+//----Afficher un message "d'erreur" si pas correctement saisie dans les champs demandés---
+//--Creer les fonctions (condition true ; false ) de chaque champs du formulaire
+//--Prenom-- 
+function prenomValidForm(){
+  const prenomSaisie = contact.prenom;
+  //-condition si c'est true or false
+  if(regExPrenomNom(prenomSaisie)){
+   firstNameErrorMsg.innerHTML = " ";
+    return true ;
+  }else{
+    firstNameErrorMsg.innerHTML = " Veuillez saisir au minimum 2 caractères ";
+    return false ;
+    
+  }
+}
+//--Nom--
+function nomValidForm(){
+  const nomSaisie = contact.nom; 
+  //-condition si c'est true or false
+  if(regExPrenomNom(nomSaisie)){
+    lastNameErrorMsg.innerHTML = " ";
+    return true ;
+  }else{
+    lastNameErrorMsg.innerHTML = " Veuillez saisir au minimum 2 caractères ";
+    return false ;
+  }
+}
+
+//--Adresse--
+function adresseValidForm(){
+  const adresseSaisie = contact.adresse;
+  //-condition si c'est true or false
+  if(regExValidAdresse(adresseSaisie)){
+    addressErrorMsg.innerHTML = " ";
+    return true ;
+  }else{
+    addressErrorMsg.innerHTML = " Veuillez saisir une adresse postale correcte ";
+    return false ;
+  }
+}
+//--Ville--- 
+function villeValidForm(){
+  const villeSaisie = contact.ville;
+  //-condition si c'est true or false 
+  if(regExValidVille(villeSaisie)){
+    cityErrorMsg.innerHTML = " ";
+    return true ;
+  }else{
+    cityErrorMsg.innerHTML = " Veuillez saisir une ville correcte ";
+    return false ;
+  }
+}
+//--Email--- 
+function emailValidForm(){
+  const emailSaisie = contact.email;
+  //-condition si c'est true or false
+  if(regExValidEmail(emailSaisie)){
+   emailErrorMsg.innerHTML = " ";
+    return true ;
+  }else{
+    emailErrorMsg.innerHTML = " Veuillez saisir un e-mail valide ";
+    return false ;
+  }
+}
+
+   
+
+
+  
+ 
