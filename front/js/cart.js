@@ -136,7 +136,7 @@ function supprimerProduit(idArticleSupprimer, colors) {
   window.location.reload();
 }
 
-/*-----------------------------------------------Fonction du formulaire------------------------------*/
+/*------------------------------Fonction du formulaire------------------------------*/
 // ----recuperer les donner dans le local----
 const local = JSON.parse(localStorage.getItem("storageUserSelect"));
 //------recuperer les donnees saisies par l'utilisateur dans le formulaire -----
@@ -268,7 +268,16 @@ function emailRegex(){
    contact
  } 
  console.log(produitPanierFormulaire);
+ //--Envoyer la variable avec les produits du local et le formulaire ??? probleme avec la methode post 
+ const envoyerFetch = fetch("http://localhost:3000/api/product/order",{
+   method: "POST",
+   body: JSON.stringify(produitPanierFormulaire),
+   headers: {
+     "Content-type" : "application/json",
+   },
+ });
 })
+
 /* ---------Afficher le contenu du local dans le formulaire-----*/
  //--Recuperer la key du local puis la stocqué dans une variable--
 const localDonnees = localStorage.getItem("formulaire")
