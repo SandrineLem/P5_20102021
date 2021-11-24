@@ -136,7 +136,7 @@ function supprimerProduit(idArticleSupprimer, colors) {
   window.location.reload();
 }
 
-//------------------------------Fonction du formulaire------------------------------ 
+/*-----------------------------------------------Fonction du formulaire------------------------------*/
 // ----recuperer les donner dans le local----
 const local = JSON.parse(localStorage.getItem("storageUserSelect"));
 //------recuperer les donnees saisies par l'utilisateur dans le formulaire -----
@@ -145,130 +145,144 @@ let btnFormEnvoie = document.querySelector("#order");
 //-- Ecoute du bouton d'envoie du formulaire --
 btnFormEnvoie.addEventListener("click", (event) =>{
   event.preventDefault();
-})
-//--Créer un "objet "formulaire" pour stocker les donnees du formulaire----
+  //--Créer un "class "formulaire" pour stocker les donnees du formulaire----
  class formulaire {
    constructor(){
-     this.prenom = document.querySelector("#firstName").value;
-     this.nom = document.querySelector("#lastName").value;
-     this.adresse = document.querySelector("#address").value;
-     this.ville = document.querySelector("#city").value;
-     this.email = document.querySelector("#email").value;
-   }  
+     this.prenom = document.getElementById("firstName").value;
+     this.nom = document.getElementById("lastName").value;
+     this.adresse = document.getElementById("address").value;
+     this.ville = document.getElementById("city").value;
+     this.email = document.getElementById("email").value;
+   }   
  }
- //instance pour creer l'objet contact 
- const contact = new formulaire ();
-//---Creer une "tableau de produit" à partir du local recup les info avec l'id 
+ //appel de l'instance de la class "formulaire"
+ const contact = new formulaire();
+ console.log(contact)
 
-let tabProduitId = [];
-for(let i = 0; i < local.length; i++){
-  tabProduitId.push(local[i].idProduit);
+/*----------------------------------------------Controle du Formulaire------------------------------- */
+//--affichage des message d'alerte--
+const affichageMsgAlert = (value) =>{
+  return `${value} : Minimum 3 à 20 caractères Maximum autorisés.\nAttention les chiffres et les symboles sont non autorisés.`
 }
-console.log(tabProduitId)
-
-//--------Analyser les donnees saisies par l'utilisateur dans le formulaire ---
-//-----utiliser la methode regExp pour creer des expressions regulières ---
-
-//--creation regExp pour ( que du texte ) ( prenom , nom)
-/*explication = ok -> minuscule , majuscule , accent speciaux sur lettre 
-majuscule et minuscule , ok -> .'- ok -> minumum 2 caractere jusqu'a max 20
-*/
-const regExPrenomNom  = (value) => {
-  return /^[a-zA-ZÀ-ÿ ,.'-]{2,20}$/.test(value)
+const affichageMsgAdressAlert = (value) => {
+  return `${value} : Veuillez commencer par renseigner le n° de la voie.\nPuis le type et le nom de la voie.\nMinimum de 3 à 30 caractères Maximum autorisés.\nAttention les symboles sont non autorisés.`
 }
 
-//--creation regExp pour ( text + number ) (adresse)
-const regExValidAdresse = (value) => {
-  return /^([a-zA-ZÀ-ÿ,-. ]{1,}|[0-9]{1,4})[ ].{1,}$/.test(value)
+const affichageMsgEmailAlert = (value) => {
+  return `${value} : Veuillez saisir une adresse mail valide \nAttention le symbole "@" et "." sont obligatoire et autorisés qu'une seule fois.\n L'Email doit se terminer minimum par 2 ou 3 caractères \nExemple : Abc@example.com ou 1b2c3@example.fr`
 }
 
-//--creation regExp pour ( que du texte ) ( ville)
-/* idem au (nom prenom) mais accetpte minimum 3 caracteres pour les villes ( car il 
-  existe pas de ville en France en 2 lettres*/
-  const regExValidVille  = (value) => {
-    return /^[a-zA-ZÀ-ÿ ,.'-]{3,20}$/.test(value)
-  }
-
-
-//--creation regExp pour email
-/*--explication regExp ^ = debut caracteres accepté 1 ere partie => lettre minuscule ou majusclule ou 0 jusqu'a 9
-ok pour des . - _ et je peux en ecrire plusieurs fois dans le debut du mail 
-retrouver un @ une seul fois puis  2eme partie de l'email ( meme chose que la 1ere)
-Ensuite 3eme partie notifie qu'1 seul . 4eme partie minuscule a-z de 2lettres jusqu'a 10 max
-$ fin de l'expression   
-*/ 
-const regExValidEmail  = (value) => {
-  return /^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/.test(value)
+//--Prenom-Nom-Ville Regex Controle--
+const prenomNomVilleRegex = (value) => {
+return /^[A-Za-zÀ-ÿ  -]{3,20}$/.test(value);
 }
 
-
-//----Afficher un message "d'erreur" si pas correctement saisie dans les champs demandés---
-//--Creer les fonctions (condition true ; false ) de chaque champs du formulaire
-//--Prenom-- 
-function prenomValidForm(){
-  const prenomSaisie = contact.prenom;
-  //-condition si c'est true or false
-  if(regExPrenomNom(prenomSaisie)){
-   firstNameErrorMsg.innerHTML = " ";
-    return true ;
+//--Prenom --
+function prenomRegex() {
+  //--recuperer les donnees des champs du formulaire---
+  const lePrenom = contact.prenom;
+  //--Controle de la validation du champ Prenom avec la methode Regex --
+  if(prenomNomVilleRegex(lePrenom)){
+  return true;
   }else{
-    firstNameErrorMsg.innerHTML = " Veuillez saisir au minimum 2 caractères ";
-    return false ;
+    alert(affichageMsgAlert("Prénom"));
+    document.getElementById("firstNameErrorMsg").innerHTML = `Veuillez renseigner ce champ`;
     
-  }
-}
-//--Nom--
-function nomValidForm(){
-  const nomSaisie = contact.nom; 
-  //-condition si c'est true or false
-  if(regExPrenomNom(nomSaisie)){
-    lastNameErrorMsg.innerHTML = " ";
-    return true ;
-  }else{
-    lastNameErrorMsg.innerHTML = " Veuillez saisir au minimum 2 caractères ";
-    return false ;
+    return false;
   }
 }
 
-//--Adresse--
-function adresseValidForm(){
-  const adresseSaisie = contact.adresse;
-  //-condition si c'est true or false
-  if(regExValidAdresse(adresseSaisie)){
-    addressErrorMsg.innerHTML = " ";
-    return true ;
+//--Nom --
+function nomRegex() {
+  //--recuperer les donnees des champs du formulaire---
+  const leNom = contact.nom;
+  //--Controle de la validation du champ Nom avec la methode Regex --
+  if(prenomNomVilleRegex(leNom)){
+  return true;
   }else{
-    addressErrorMsg.innerHTML = " Veuillez saisir une adresse postale correcte ";
-    return false ;
-  }
-}
-//--Ville--- 
-function villeValidForm(){
-  const villeSaisie = contact.ville;
-  //-condition si c'est true or false 
-  if(regExValidVille(villeSaisie)){
-    cityErrorMsg.innerHTML = " ";
-    return true ;
-  }else{
-    cityErrorMsg.innerHTML = " Veuillez saisir une ville correcte ";
-    return false ;
-  }
-}
-//--Email--- 
-function emailValidForm(){
-  const emailSaisie = contact.email;
-  //-condition si c'est true or false
-  if(regExValidEmail(emailSaisie)){
-   emailErrorMsg.innerHTML = " ";
-    return true ;
-  }else{
-    emailErrorMsg.innerHTML = " Veuillez saisir un e-mail valide ";
-    return false ;
+  document.getElementById("lastNameErrorMsg").innerHTML = `Veuillez renseigner ce champ`;  
+  alert(affichageMsgAlert("Nom"));
+  return false;
   }
 }
 
-   
+//--Adresse-- + --controle via Regex --
+//--Regex directement dans la fonction adresse 
+function adresseRegex(){
+  //--recuperer les donnees des champs du formulaire---
+  const laAdresse = contact.adresse;
+  //--Controle de la validation du champ Adresse avec la methode Regex --
+  if(/^[0-9 ]{1,4}[A-Za-zÀ-ÿ  -]{2,30}$/.test(laAdresse)){
+  return true;
+  }else{
+  document.getElementById("addressErrorMsg").innerHTML = `Veuillez renseigner ce champ`;
+  alert(affichageMsgAdressAlert("Adresse"));
+  return false;
+  }
+}
 
+//--Ville--
+function villeRegex(){
+  //--recuperer les donnees des champs du formulaire---
+  const laVille = contact.ville;
+  //--Controle de la validation du champ Ville avec la methode Regex --
+  if(prenomNomVilleRegex(laVille)){
+  return true;
+  }else{
+  document.getElementById("cityErrorMsg").innerHTML = `Veuillez renseigner ce champ`;
+  alert(affichageMsgAlert("Ville"));
+  return false;
+  }
+}
 
-  
+//--Email-- + --controle via Regex --
+//--Regex directement dans la fonction Email-- 
+function emailRegex(){
+  //--recuperer les donnees des champs du formulaire---
+  const laemail = contact.email;
+  //--Controle de la validation du champ Email avec la methode Regex --
+  if(/^[a-zA-Z0-9.-_]+[@]{1}[a-zA-Z0-9.-_]+[.]{1}[a-z]{2,10}$/.test(laemail)){
+  return true;
+  }else{
+  document.getElementById("emailErrorMsg").innerHTML = `Veuillez renseigner ce champ`;
+  alert(affichageMsgEmailAlert("Email"));
+  return false;
+  }
+}
+/*---------------------------------Gestion du Local avec le Formulaire -----------------------------*/
+
+/*--------mettre l'objet "contact" dans le localStorage--- 
+ ---attention mettre l'objet en chaine de caractere "JSON STRINGIFY"--------*/
+
+ //--Ajout de la condition si le formulaire est bien rempli j'envoie l'objet sinon (non)---
+ if(prenomRegex() && nomRegex() && adresseRegex() && villeRegex()   && emailRegex()){
+  localStorage.setItem("formulaire", JSON.stringify (contact));
+ }else{
+  alert("Veuillez bien remplir les champs du formulaire avant de commander.");
+ }
  
+ 
+ //---creer une variable avec les produits du local et le formulaire---
+ let produitPanierFormulaire = {
+   local, 
+   contact
+ } 
+ console.log(produitPanierFormulaire);
+})
+/* ---------Afficher le contenu du local dans le formulaire-----*/
+ //--Recuperer la key du local puis la stocqué dans une variable--
+const localDonnees = localStorage.getItem("formulaire")
+//--Attention convertir la chaine de caractere en objet Javascript--
+const localDonneesObjet = JSON.parse(localDonnees);
+console.log("localDonneesObjet")
+console.log(localDonneesObjet);
+
+/* -------Mettre les donnees du formulaire du local 
+directement dans les champs du formulaire----- */
+document.getElementById("lastName").value = localDonneesObjet.nom;
+document.getElementById("firstName").value = localDonneesObjet.prenom;
+document.getElementById("address").value = localDonneesObjet.adresse;
+document.getElementById("city").value = localDonneesObjet.ville;
+document.getElementById("email").value = localDonneesObjet.email;
+
+
