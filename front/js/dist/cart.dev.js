@@ -263,6 +263,7 @@ btnFormEnvoie.addEventListener("click", function (event) {
 
   /*--------mettre l'objet "contact" dans le localStorage--- 
    ---attention mettre l'objet en chaine de caractere "JSON STRINGIFY"--------*/
+  //creer un tableau de produits pour recuperer l'id 
   //--Ajout de la condition si le formulaire est bien rempli j'envoie l'objet sinon (non)---
 
 
@@ -270,36 +271,37 @@ btnFormEnvoie.addEventListener("click", function (event) {
     localStorage.setItem("formulaire", JSON.stringify(contact));
   } else {
     alert("Veuillez bien remplir les champs du formulaire avant de commander.");
-  } //---creer une variable avec les produits du local et le formulaire---
+  } //--faire une boucle sur le local storage--
 
 
-  var produitPanierFormulaire = {
-    local: local,
-    contact: contact
-  };
-  console.log(produitPanierFormulaire); //--Envoyer la variable avec les produits du local et le formulaire ??? probleme avec la methode post 
+  for (y = 0; y < local.length; y++) {
+    var produitsId = local[y].idProduit; //recup l'id dans local
 
-  var envoyerFetch = fetch("http://localhost:3000/api/product/order", {
-    method: "POST",
-    body: JSON.stringify(produitPanierFormulaire),
-    headers: {
-      "Content-type": "application/json"
-    }
-  });
+    console.log("produitsId");
+    console.log(produitsId); //---creer une variable avec les produits du local et le formulaire---
+
+    var produitPanierFormulaire = {
+      local: local,
+      contact: contact,
+      produitsId: produitsId
+    };
+    console.log(produitPanierFormulaire);
+  }
+  /* ---------Afficher le contenu du local dans le formulaire-----*/
+  //--Recuperer la key du local puis la stocqué dans une variable--
+
+
+  var localDonnees = localStorage.getItem("formulaire"); //--Attention convertir la chaine de caractere en objet Javascript--
+
+  var localDonneesObjet = JSON.parse(localDonnees);
+  console.log("localDonneesObjet");
+  console.log(localDonneesObjet);
+  /* -------Mettre les donnees du formulaire du local 
+  directement dans les champs du formulaire----- */
+
+  document.getElementById("lastName").value = localDonneesObjet.nom;
+  document.getElementById("firstName").value = localDonneesObjet.prenom;
+  document.getElementById("address").value = localDonneesObjet.adresse;
+  document.getElementById("city").value = localDonneesObjet.ville;
+  document.getElementById("email").value = localDonneesObjet.email;
 });
-/* ---------Afficher le contenu du local dans le formulaire-----*/
-//--Recuperer la key du local puis la stocqué dans une variable--
-
-var localDonnees = localStorage.getItem("formulaire"); //--Attention convertir la chaine de caractere en objet Javascript--
-
-var localDonneesObjet = JSON.parse(localDonnees);
-console.log("localDonneesObjet");
-console.log(localDonneesObjet);
-/* -------Mettre les donnees du formulaire du local 
-directement dans les champs du formulaire----- */
-
-document.getElementById("lastName").value = localDonneesObjet.nom;
-document.getElementById("firstName").value = localDonneesObjet.prenom;
-document.getElementById("address").value = localDonneesObjet.adresse;
-document.getElementById("city").value = localDonneesObjet.ville;
-document.getElementById("email").value = localDonneesObjet.email;

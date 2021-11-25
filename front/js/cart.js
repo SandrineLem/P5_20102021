@@ -251,41 +251,38 @@ function emailRegex(){
 }
 /*---------------------------------Gestion du Local avec le Formulaire -----------------------------*/
 
+
 /*--------mettre l'objet "contact" dans le localStorage--- 
  ---attention mettre l'objet en chaine de caractere "JSON STRINGIFY"--------*/
-
+ //creer un tableau de produits pour recuperer l'id 
+ 
  //--Ajout de la condition si le formulaire est bien rempli j'envoie l'objet sinon (non)---
  if(prenomRegex() && nomRegex() && adresseRegex() && villeRegex()   && emailRegex()){
   localStorage.setItem("formulaire", JSON.stringify (contact));
  }else{
   alert("Veuillez bien remplir les champs du formulaire avant de commander.");
  }
- 
- 
- //---creer une variable avec les produits du local et le formulaire---
+  //--faire une boucle sur le local storage--
+  for (y = 0; y < local.length; y++) {
+  let produitsId = local[y].idProduit; //recup l'id dans local
+  console.log("produitsId");
+  console.log(produitsId );
+
+  //---creer une variable avec les produits du local et le formulaire---
  let produitPanierFormulaire = {
    local, 
-   contact
+   contact,
+   produitsId
+  }
+  console.log(produitPanierFormulaire);
  } 
- console.log(produitPanierFormulaire);
- //--Envoyer la variable avec les produits du local et le formulaire ??? probleme avec la methode post 
- const envoyerFetch = fetch("http://localhost:3000/api/product/order",{
-   method: "POST",
-   body: JSON.stringify(produitPanierFormulaire),
-   headers: {
-     "Content-type" : "application/json",
-   },
- });
-})
-
-/* ---------Afficher le contenu du local dans le formulaire-----*/
+ /* ---------Afficher le contenu du local dans le formulaire-----*/
  //--Recuperer la key du local puis la stocqué dans une variable--
 const localDonnees = localStorage.getItem("formulaire")
 //--Attention convertir la chaine de caractere en objet Javascript--
 const localDonneesObjet = JSON.parse(localDonnees);
 console.log("localDonneesObjet")
 console.log(localDonneesObjet);
-
 /* -------Mettre les donnees du formulaire du local 
 directement dans les champs du formulaire----- */
 document.getElementById("lastName").value = localDonneesObjet.nom;
@@ -293,5 +290,7 @@ document.getElementById("firstName").value = localDonneesObjet.prenom;
 document.getElementById("address").value = localDonneesObjet.adresse;
 document.getElementById("city").value = localDonneesObjet.ville;
 document.getElementById("email").value = localDonneesObjet.email;
+})
+
 
 
