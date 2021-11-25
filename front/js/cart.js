@@ -5,7 +5,7 @@
 (async function() {
   // ---recuperer les donner dans le local----
   const local = JSON.parse(localStorage.getItem("storageUserSelect"));
-  console.log(local);
+  
   //------fonction afficher les produit du localStorage  dans le panier---
   //----si le panier est vide----
   if (local === null) {
@@ -20,10 +20,10 @@
       //--faire une boucle sur le local storage--
       for (y = 0; y < local.length; y++) {
           const idLocal = local[y].idProduit; //recup l'id dans local
-          console.log(idLocal);
+          
       //--puis recuperer la function get article pour api id en lien avec l'id dans le local--
           const articleLocal = await getArticle(idLocal); 
-          console.log(articleLocal);
+          
       //---calcul du prix Total dans le panier (recup prix dans le local * quantite dans le local )---
           prixTotalPanier =
               prixTotalPanier +
@@ -259,37 +259,32 @@ function emailRegex(){
  //--Ajout de la condition si le formulaire est bien rempli j'envoie l'objet sinon (non)---
  if(prenomRegex() && nomRegex() && adresseRegex() && villeRegex()   && emailRegex()){
   localStorage.setItem("formulaire", JSON.stringify (contact));
+  //--faire une boucle sur le local storage--
+  for (y = 0; y < local.length; y++) {
+    let produitsId = local[y].idProduit; //recup l'id dans local
+    console.log("produitsId");
+    console.log(produitsId );
+  
+    //---creer une variable avec les produits du local et le formulaire---
+   let produitPanierFormulaire = { 
+     contact,
+     produitsId
+    }
+    console.log(produitPanierFormulaire);
+   } 
+   /* ---------Afficher le contenu du local dans le formulaire-----*/
+   //--Recuperer la key du local puis la stocqué dans une variable--
+  const localDonnees = localStorage.getItem("formulaire")
+  
+  //--Attention convertir la chaine de caractere en objet Javascript--
+  const localDonneesObjet = JSON.parse(localDonnees);
+  console.log("localDonneesObjet")
+  console.log(localDonneesObjet);
+
  }else{
   alert("Veuillez bien remplir les champs du formulaire avant de commander.");
  }
-  //--faire une boucle sur le local storage--
-  for (y = 0; y < local.length; y++) {
-  let produitsId = local[y].idProduit; //recup l'id dans local
-  console.log("produitsId");
-  console.log(produitsId );
-
-  //---creer une variable avec les produits du local et le formulaire---
- let produitPanierFormulaire = {
-   local, 
-   contact,
-   produitsId
-  }
-  console.log(produitPanierFormulaire);
- } 
- /* ---------Afficher le contenu du local dans le formulaire-----*/
- //--Recuperer la key du local puis la stocqué dans une variable--
-const localDonnees = localStorage.getItem("formulaire")
-//--Attention convertir la chaine de caractere en objet Javascript--
-const localDonneesObjet = JSON.parse(localDonnees);
-console.log("localDonneesObjet")
-console.log(localDonneesObjet);
-/* -------Mettre les donnees du formulaire du local 
-directement dans les champs du formulaire----- */
-document.getElementById("lastName").value = localDonneesObjet.nom;
-document.getElementById("firstName").value = localDonneesObjet.prenom;
-document.getElementById("address").value = localDonneesObjet.adresse;
-document.getElementById("city").value = localDonneesObjet.ville;
-document.getElementById("email").value = localDonneesObjet.email;
+  
 })
 
 

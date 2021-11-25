@@ -11,20 +11,19 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       switch (_context.prev = _context.next) {
         case 0:
           // ---recuperer les donner dans le local----
-          local = JSON.parse(localStorage.getItem("storageUserSelect"));
-          console.log(local); //------fonction afficher les produit du localStorage  dans le panier---
+          local = JSON.parse(localStorage.getItem("storageUserSelect")); //------fonction afficher les produit du localStorage  dans le panier---
           //----si le panier est vide----
 
           if (!(local === null)) {
-            _context.next = 6;
+            _context.next = 5;
             break;
           }
 
           console.log("le panier est vide");
-          _context.next = 24;
+          _context.next = 21;
           break;
 
-        case 6:
+        case 5:
           //---si le panier n'est pas vide l'afficher dans le local storage---
           //--initialiser le total du prix du Panier--
           prixTotalPanier = 0; //--initialiser le total de la quantite de produit calcule dans le Panier--
@@ -33,41 +32,39 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           y = 0;
 
-        case 9:
+        case 8:
           if (!(y < local.length)) {
-            _context.next = 22;
+            _context.next = 19;
             break;
           }
 
           idLocal = local[y].idProduit; //recup l'id dans local
+          //--puis recuperer la function get article pour api id en lien avec l'id dans le local--
 
-          console.log(idLocal); //--puis recuperer la function get article pour api id en lien avec l'id dans le local--
-
-          _context.next = 14;
+          _context.next = 12;
           return regeneratorRuntime.awrap(getArticle(idLocal));
 
-        case 14:
+        case 12:
           articleLocal = _context.sent;
-          console.log(articleLocal); //---calcul du prix Total dans le panier (recup prix dans le local * quantite dans le local )---
-
+          //---calcul du prix Total dans le panier (recup prix dans le local * quantite dans le local )---
           prixTotalPanier = prixTotalPanier + parseInt(articleLocal.price) * parseInt(local[y].quantityUser); //---calcul de la quantite total de produit dans le panier(addition de la quantite Total de produit + quantite du local)---
 
           quantiteTotalCalculePanier = quantiteTotalCalculePanier + parseInt(local[y].quantityUser); //------insertion dans le dom des infos produit------ 
 
           document.getElementById("cart__items").innerHTML += "<article class=\"cart__item\" data-id=\"".concat(idLocal, "\">\n      <div class=\"cart__item__img\">\n        <img src=\"").concat(articleLocal.imageUrl, "\" alt=\"").concat(articleLocal.altTxt, "\">\n      </div>\n      <div class=\"cart__item__content\">\n        <div class=\"cart__item__content__titlePrice\">\n          <h2>").concat(articleLocal.name, "</h2>\n        <div class=\"item__content__settings__color\">\n            <h2>'").concat(local[y].colors, "'<h2>\n          <p>").concat(articleLocal.price, "\u20AC</p>\n        </div>\n        <div class=\"cart__item__content__settings\">\n          <div class=\"cart__item__content__settings__quantity\">\n            <p>Qt\xE9 :").concat(local[y].quantityUser, " </p>\n            <input type=\"number\" class=\"itemQuantity\" onChange=\"modifQuantitePanier()\" \"name=\"itemQuantity\" min=\"1\" max=\"100\" value=\"").concat(local[y].quantityUser, "\">\n          </div>\n          <div class=\"cart__item__content__settings__delete\">\n            <p class=\"deleteItem\" onClick=\"supprimerProduit('").concat(idLocal, "','").concat(local[y].colors, "')\">Supprimer</p>\n          </div>\n        </div>\n      </div>\n    </article>");
 
-        case 19:
+        case 16:
           y++;
-          _context.next = 9;
+          _context.next = 8;
           break;
 
-        case 22:
+        case 19:
           //------insertion dans le dom du prix total du panier------ 
           document.getElementById("totalPrice").innerHTML = prixTotalPanier + " €"; //------insertion dans le dom de la quantite total calculee du panier------ 
 
           document.getElementById("totalQuantity").innerHTML = quantiteTotalCalculePanier;
 
-        case 24:
+        case 21:
         case "end":
           return _context.stop();
       }
@@ -268,40 +265,30 @@ btnFormEnvoie.addEventListener("click", function (event) {
 
 
   if (prenomRegex() && nomRegex() && adresseRegex() && villeRegex() && emailRegex()) {
-    localStorage.setItem("formulaire", JSON.stringify(contact));
+    localStorage.setItem("formulaire", JSON.stringify(contact)); //--faire une boucle sur le local storage--
+
+    for (y = 0; y < local.length; y++) {
+      var produitsId = local[y].idProduit; //recup l'id dans local
+
+      console.log("produitsId");
+      console.log(produitsId); //---creer une variable avec les produits du local et le formulaire---
+
+      var produitPanierFormulaire = {
+        contact: contact,
+        produitsId: produitsId
+      };
+      console.log(produitPanierFormulaire);
+    }
+    /* ---------Afficher le contenu du local dans le formulaire-----*/
+    //--Recuperer la key du local puis la stocqué dans une variable--
+
+
+    var localDonnees = localStorage.getItem("formulaire"); //--Attention convertir la chaine de caractere en objet Javascript--
+
+    var localDonneesObjet = JSON.parse(localDonnees);
+    console.log("localDonneesObjet");
+    console.log(localDonneesObjet);
   } else {
     alert("Veuillez bien remplir les champs du formulaire avant de commander.");
-  } //--faire une boucle sur le local storage--
-
-
-  for (y = 0; y < local.length; y++) {
-    var produitsId = local[y].idProduit; //recup l'id dans local
-
-    console.log("produitsId");
-    console.log(produitsId); //---creer une variable avec les produits du local et le formulaire---
-
-    var produitPanierFormulaire = {
-      local: local,
-      contact: contact,
-      produitsId: produitsId
-    };
-    console.log(produitPanierFormulaire);
   }
-  /* ---------Afficher le contenu du local dans le formulaire-----*/
-  //--Recuperer la key du local puis la stocqué dans une variable--
-
-
-  var localDonnees = localStorage.getItem("formulaire"); //--Attention convertir la chaine de caractere en objet Javascript--
-
-  var localDonneesObjet = JSON.parse(localDonnees);
-  console.log("localDonneesObjet");
-  console.log(localDonneesObjet);
-  /* -------Mettre les donnees du formulaire du local 
-  directement dans les champs du formulaire----- */
-
-  document.getElementById("lastName").value = localDonneesObjet.nom;
-  document.getElementById("firstName").value = localDonneesObjet.prenom;
-  document.getElementById("address").value = localDonneesObjet.adresse;
-  document.getElementById("city").value = localDonneesObjet.ville;
-  document.getElementById("email").value = localDonneesObjet.email;
 });
