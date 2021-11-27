@@ -11,19 +11,20 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
       switch (_context.prev = _context.next) {
         case 0:
           // ---recuperer les donner dans le local----
-          local = JSON.parse(localStorage.getItem("storageUserSelect")); //------fonction afficher les produit du localStorage  dans le panier---
+          local = JSON.parse(localStorage.getItem("storageUserSelect"));
+          console.log(local); //------fonction afficher les produit du localStorage  dans le panier---
           //----si le panier est vide----
 
           if (!(local === null)) {
-            _context.next = 5;
+            _context.next = 6;
             break;
           }
 
           console.log("le panier est vide");
-          _context.next = 21;
+          _context.next = 24;
           break;
 
-        case 5:
+        case 6:
           //---si le panier n'est pas vide l'afficher dans le local storage---
           //--initialiser le total du prix du Panier--
           prixTotalPanier = 0; //--initialiser le total de la quantite de produit calcule dans le Panier--
@@ -32,39 +33,41 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           y = 0;
 
-        case 8:
+        case 9:
           if (!(y < local.length)) {
-            _context.next = 19;
+            _context.next = 22;
             break;
           }
 
           idLocal = local[y].idProduit; //recup l'id dans local
-          //--puis recuperer la function get article pour api id en lien avec l'id dans le local--
 
-          _context.next = 12;
+          console.log(idLocal); //--puis recuperer la function get article pour api id en lien avec l'id dans le local--
+
+          _context.next = 14;
           return regeneratorRuntime.awrap(getArticle(idLocal));
 
-        case 12:
+        case 14:
           articleLocal = _context.sent;
-          //---calcul du prix Total dans le panier (recup prix dans le local * quantite dans le local )---
+          console.log(articleLocal); //---calcul du prix Total dans le panier (recup prix dans le local * quantite dans le local )---
+
           prixTotalPanier = prixTotalPanier + parseInt(articleLocal.price) * parseInt(local[y].quantityUser); //---calcul de la quantite total de produit dans le panier(addition de la quantite Total de produit + quantite du local)---
 
           quantiteTotalCalculePanier = quantiteTotalCalculePanier + parseInt(local[y].quantityUser); //------insertion dans le dom des infos produit------ 
 
           document.getElementById("cart__items").innerHTML += "<article class=\"cart__item\" data-id=\"".concat(idLocal, "\">\n      <div class=\"cart__item__img\">\n        <img src=\"").concat(articleLocal.imageUrl, "\" alt=\"").concat(articleLocal.altTxt, "\">\n      </div>\n      <div class=\"cart__item__content\">\n        <div class=\"cart__item__content__titlePrice\">\n          <h2>").concat(articleLocal.name, "</h2>\n        <div class=\"item__content__settings__color\">\n            <h2>'").concat(local[y].colors, "'<h2>\n          <p>").concat(articleLocal.price, "\u20AC</p>\n        </div>\n        <div class=\"cart__item__content__settings\">\n          <div class=\"cart__item__content__settings__quantity\">\n            <p>Qt\xE9 :").concat(local[y].quantityUser, " </p>\n            <input type=\"number\" class=\"itemQuantity\" onChange=\"modifQuantitePanier()\" \"name=\"itemQuantity\" min=\"1\" max=\"100\" value=\"").concat(local[y].quantityUser, "\">\n          </div>\n          <div class=\"cart__item__content__settings__delete\">\n            <p class=\"deleteItem\" onClick=\"supprimerProduit('").concat(idLocal, "','").concat(local[y].colors, "')\">Supprimer</p>\n          </div>\n        </div>\n      </div>\n    </article>");
 
-        case 16:
+        case 19:
           y++;
-          _context.next = 8;
+          _context.next = 9;
           break;
 
-        case 19:
+        case 22:
           //------insertion dans le dom du prix total du panier------ 
           document.getElementById("totalPrice").innerHTML = prixTotalPanier + " €"; //------insertion dans le dom de la quantite total calculee du panier------ 
 
           document.getElementById("totalQuantity").innerHTML = quantiteTotalCalculePanier;
 
-        case 21:
+        case 24:
         case "end":
           return _context.stop();
       }
@@ -155,11 +158,12 @@ btnFormEnvoie.addEventListener("click", function (event) {
   var formulaire = function formulaire() {
     _classCallCheck(this, formulaire);
 
-    this.prenom = document.getElementById("firstName").value;
-    this.nom = document.getElementById("lastName").value;
-    this.adresse = document.getElementById("address").value;
-    this.ville = document.getElementById("city").value;
+    this.firstName = document.getElementById("firstName").value;
+    this.lastName = document.getElementById("lastName").value;
+    this.address = document.getElementById("address").value;
+    this.city = document.getElementById("city").value;
     this.email = document.getElementById("email").value;
+    this.products = [];
   }; //appel de l'instance de la class "formulaire"
 
 
@@ -188,7 +192,7 @@ btnFormEnvoie.addEventListener("click", function (event) {
 
   function prenomRegex() {
     //--recuperer les donnees des champs du formulaire---
-    var lePrenom = contact.prenom; //--Controle de la validation du champ Prenom avec la methode Regex --
+    var lePrenom = contact.firstName; //--Controle de la validation du champ Prenom avec la methode Regex --
 
     if (prenomNomVilleRegex(lePrenom)) {
       return true;
@@ -202,7 +206,7 @@ btnFormEnvoie.addEventListener("click", function (event) {
 
   function nomRegex() {
     //--recuperer les donnees des champs du formulaire---
-    var leNom = contact.nom; //--Controle de la validation du champ Nom avec la methode Regex --
+    var leNom = contact.lastName; //--Controle de la validation du champ Nom avec la methode Regex --
 
     if (prenomNomVilleRegex(leNom)) {
       return true;
@@ -217,7 +221,7 @@ btnFormEnvoie.addEventListener("click", function (event) {
 
   function adresseRegex() {
     //--recuperer les donnees des champs du formulaire---
-    var laAdresse = contact.adresse; //--Controle de la validation du champ Adresse avec la methode Regex --
+    var laAdresse = contact.address; //--Controle de la validation du champ Adresse avec la methode Regex --
 
     if (/^[0-9 ]{1,4}[A-Za-zÀ-ÿ  -]{2,30}$/.test(laAdresse)) {
       return true;
@@ -231,7 +235,7 @@ btnFormEnvoie.addEventListener("click", function (event) {
 
   function villeRegex() {
     //--recuperer les donnees des champs du formulaire---
-    var laVille = contact.ville; //--Controle de la validation du champ Ville avec la methode Regex --
+    var laVille = contact.city; //--Controle de la validation du champ Ville avec la methode Regex --
 
     if (prenomNomVilleRegex(laVille)) {
       return true;
@@ -265,29 +269,35 @@ btnFormEnvoie.addEventListener("click", function (event) {
 
 
   if (prenomRegex() && nomRegex() && adresseRegex() && villeRegex() && emailRegex()) {
-    localStorage.setItem("formulaire", JSON.stringify(contact)); //--faire une boucle sur le local storage--
-
+    //--faire une boucle sur le local storage--
     for (y = 0; y < local.length; y++) {
       var produitsId = local[y].idProduit; //recup l'id dans local
 
-      console.log("produitsId");
-      console.log(produitsId); //---creer une variable avec les produits du local et le formulaire---
-
-      var produitPanierFormulaire = {
-        contact: contact,
-        produitsId: produitsId
-      };
-      console.log(produitPanierFormulaire);
+      contact.products.push(produitsId);
     }
-    /* ---------Afficher le contenu du local dans le formulaire-----*/
-    //--Recuperer la key du local puis la stocqué dans une variable--
 
+    console.log("contact");
+    console.log(contact);
+    /* ---------methode fetch POST-----*/
 
-    var localDonnees = localStorage.getItem("formulaire"); //--Attention convertir la chaine de caractere en objet Javascript--
-
-    var localDonneesObjet = JSON.parse(localDonnees);
-    console.log("localDonneesObjet");
-    console.log(localDonneesObjet);
+    fetch("http://localhost:3000/api/products/order", {
+      method: "POST",
+      body: json.stringify(contact.formulaire),
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(function (httpBodyResponse) {
+      // fonction quand il recupere les donnees en httpBody
+      return httpBodyResponse.json(); // transfromation de httpBody  en json
+    }).then(function (data) {
+      // recuperer le json renommé en "data"
+      //return data;
+      console.log("data");
+      console.log(data); // reponse return le contenu json "data"
+    })["catch"](function (error) {
+      // si erreur fonction d'afficher une alert 'error' 
+      alert(error);
+    });
   } else {
     alert("Veuillez bien remplir les champs du formulaire avant de commander.");
   }

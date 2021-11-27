@@ -5,7 +5,7 @@
 (async function() {
   // ---recuperer les donner dans le local----
   const local = JSON.parse(localStorage.getItem("storageUserSelect"));
-  
+  console.log(local);
   //------fonction afficher les produit du localStorage  dans le panier---
   //----si le panier est vide----
   if (local === null) {
@@ -20,10 +20,10 @@
       //--faire une boucle sur le local storage--
       for (y = 0; y < local.length; y++) {
           const idLocal = local[y].idProduit; //recup l'id dans local
-          
+          console.log(idLocal);
       //--puis recuperer la function get article pour api id en lien avec l'id dans le local--
           const articleLocal = await getArticle(idLocal); 
-          
+          console.log(articleLocal);
       //---calcul du prix Total dans le panier (recup prix dans le local * quantite dans le local )---
           prixTotalPanier =
               prixTotalPanier +
@@ -148,11 +148,12 @@ btnFormEnvoie.addEventListener("click", (event) =>{
   //--Créer un "class "formulaire" pour stocker les donnees du formulaire----
  class formulaire {
    constructor(){
-     this.prenom = document.getElementById("firstName").value;
-     this.nom = document.getElementById("lastName").value;
-     this.adresse = document.getElementById("address").value;
-     this.ville = document.getElementById("city").value;
+     this.firstName = document.getElementById("firstName").value;
+     this.lastName = document.getElementById("lastName").value;
+     this.address = document.getElementById("address").value;
+     this.city = document.getElementById("city").value;
      this.email = document.getElementById("email").value;
+     this.products = [];
    }   
  }
  //appel de l'instance de la class "formulaire"
@@ -180,7 +181,7 @@ return /^[A-Za-zÀ-ÿ  -]{3,20}$/.test(value);
 //--Prenom --
 function prenomRegex() {
   //--recuperer les donnees des champs du formulaire---
-  const lePrenom = contact.prenom;
+  const lePrenom = contact.firstName;
   //--Controle de la validation du champ Prenom avec la methode Regex --
   if(prenomNomVilleRegex(lePrenom)){
   return true;
@@ -195,7 +196,7 @@ function prenomRegex() {
 //--Nom --
 function nomRegex() {
   //--recuperer les donnees des champs du formulaire---
-  const leNom = contact.nom;
+  const leNom = contact.lastName;
   //--Controle de la validation du champ Nom avec la methode Regex --
   if(prenomNomVilleRegex(leNom)){
   return true;
@@ -210,7 +211,7 @@ function nomRegex() {
 //--Regex directement dans la fonction adresse 
 function adresseRegex(){
   //--recuperer les donnees des champs du formulaire---
-  const laAdresse = contact.adresse;
+  const laAdresse = contact.address;
   //--Controle de la validation du champ Adresse avec la methode Regex --
   if(/^[0-9 ]{1,4}[A-Za-zÀ-ÿ  -]{2,30}$/.test(laAdresse)){
   return true;
@@ -224,7 +225,7 @@ function adresseRegex(){
 //--Ville--
 function villeRegex(){
   //--recuperer les donnees des champs du formulaire---
-  const laVille = contact.ville;
+  const laVille = contact.city;
   //--Controle de la validation du champ Ville avec la methode Regex --
   if(prenomNomVilleRegex(laVille)){
   return true;
@@ -258,34 +259,38 @@ function emailRegex(){
  
  //--Ajout de la condition si le formulaire est bien rempli j'envoie l'objet sinon (non)---
  if(prenomRegex() && nomRegex() && adresseRegex() && villeRegex()   && emailRegex()){
-  localStorage.setItem("formulaire", JSON.stringify (contact));
+
   //--faire une boucle sur le local storage--
   for (y = 0; y < local.length; y++) {
-    let produitsId = local[y].idProduit; //recup l'id dans local
-    console.log("produitsId");
-    console.log(produitsId );
-  
-    //---creer une variable avec les produits du local et le formulaire---
-   let produitPanierFormulaire = { 
-     contact,
-     produitsId
-    }
-    console.log(produitPanierFormulaire);
-   } 
-   /* ---------Afficher le contenu du local dans le formulaire-----*/
-   //--Recuperer la key du local puis la stocqué dans une variable--
-  const localDonnees = localStorage.getItem("formulaire")
-  
-  //--Attention convertir la chaine de caractere en objet Javascript--
-  const localDonneesObjet = JSON.parse(localDonnees);
-  console.log("localDonneesObjet")
-  console.log(localDonneesObjet);
+  let produitsId = local[y].idProduit; //recup l'id dans local
+  contact.products.push(produitsId);
+ } 
+ console.log("contact");
+ console.log(contact);
+ /* ---------methode fetch POST-----*/
+ fetch(`http://localhost:3000/api/products/order`,{
+   method:"POST",
+   body:json.stringify(contact.formulaire),
+   headers:{
+    'Content-Type': 'application/json',
+   }
+ })
+  .then (function(httpBodyResponse){ // fonction quand il recupere les donnees en httpBody
+    return httpBodyResponse.json() // transfromation de httpBody  en json
+  })
+  .then(function(data){ // recuperer le json renommé en "data"
+    //return data;
+    console.log("data");
+    console.log(data);     // reponse return le contenu json "data"
+})
+
+.catch(function(error){    // si erreur fonction d'afficher une alert 'error' 
+    alert(error)
+});
+
 
  }else{
   alert("Veuillez bien remplir les champs du formulaire avant de commander.");
  }
   
 })
-
-
-
