@@ -52,9 +52,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           prixTotalPanier = prixTotalPanier + parseInt(articleLocal.price) * parseInt(local[y].quantityUser); //---calcul de la quantite total de produit dans le panier(addition de la quantite Total de produit + quantite du local)---
 
-          quantiteTotalCalculePanier = quantiteTotalCalculePanier + parseInt(local[y].quantityUser); //------insertion dans le dom des infos produit------ 
+          quantiteTotalCalculePanier = quantiteTotalCalculePanier + parseInt(local[y].quantityUser); //------insertion dans le dom des infos produit------
 
-          document.getElementById("cart__items").innerHTML += "<article class=\"cart__item\" data-id=\"".concat(idLocal, "\">\n      <div class=\"cart__item__img\">\n        <img src=\"").concat(articleLocal.imageUrl, "\" alt=\"").concat(articleLocal.altTxt, "\">\n      </div>\n      <div class=\"cart__item__content\">\n        <div class=\"cart__item__content__titlePrice\">\n          <h2>").concat(articleLocal.name, "</h2>\n        <div class=\"item__content__settings__color\">\n            <h2>'").concat(local[y].colors, "'<h2>\n          <p>").concat(articleLocal.price, "\u20AC</p>\n        </div>\n        <div class=\"cart__item__content__settings\">\n          <div class=\"cart__item__content__settings__quantity\">\n            <p>Qt\xE9 :").concat(local[y].quantityUser, " </p>\n            <input type=\"number\" class=\"itemQuantity\" onChange=\"modifQuantitePanier()\" \"name=\"itemQuantity\" min=\"1\" max=\"100\" value=\"").concat(local[y].quantityUser, "\">\n          </div>\n          <div class=\"cart__item__content__settings__delete\">\n            <p class=\"deleteItem\" onClick=\"supprimerProduit('").concat(idLocal, "','").concat(local[y].colors, "')\">Supprimer</p>\n          </div>\n        </div>\n      </div>\n    </article>");
+          document.getElementById("cart__items").innerHTML += "<article class=\"cart__item\" data-id=\"".concat(idLocal, "\">\n    <div class=\"cart__item__img\">\n      <img src=\"").concat(articleLocal.imageUrl, "\" alt=\"").concat(articleLocal.altTxt, "\">\n    </div>\n    <div class=\"cart__item__content\">\n      <div class=\"cart__item__content__titlePrice\">\n        <h2>").concat(articleLocal.name, "</h2>\n      <div class=\"item__content__settings__color\">\n          <h2>'").concat(local[y].colors, "'<h2>\n        <p>").concat(articleLocal.price, "\u20AC</p>\n      </div>\n      <div class=\"cart__item__content__settings\">\n        <div class=\"cart__item__content__settings__quantity\">\n          <p>Qt\xE9 :").concat(local[y].quantityUser, " </p>\n          <input type=\"number\" class=\"itemQuantity\" onChange=\"modifQuantitePanier()\" \"name=\"itemQuantity\" min=\"1\" max=\"100\" value=\"").concat(local[y].quantityUser, "\">\n        </div>\n        <div class=\"cart__item__content__settings__delete\">\n          <p class=\"deleteItem\" onClick=\"supprimerProduit('").concat(idLocal, "','").concat(local[y].colors, "')\">Supprimer</p>\n        </div>\n      </div>\n    </div>\n  </article>");
 
         case 19:
           y++;
@@ -62,8 +62,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           break;
 
         case 22:
-          //------insertion dans le dom du prix total du panier------ 
-          document.getElementById("totalPrice").innerHTML = prixTotalPanier + " €"; //------insertion dans le dom de la quantite total calculee du panier------ 
+          //------insertion dans le dom du prix total du panier------
+          document.getElementById("totalPrice").innerHTML = prixTotalPanier + " €"; //------insertion dans le dom de la quantite total calculee du panier------
 
           document.getElementById("totalQuantity").innerHTML = quantiteTotalCalculePanier;
 
@@ -114,7 +114,7 @@ function modifQuantitePanier() {
         }
       }); //---mettre a jour les données renvoyées dans le local---
 
-      localStorage.setItem("storageUserSelect", JSON.stringify(local)); //--rechargement de la page-- 
+      localStorage.setItem("storageUserSelect", JSON.stringify(local)); //--rechargement de la page--
 
       window.location.reload();
     });
@@ -123,10 +123,10 @@ function modifQuantitePanier() {
 
 
 function supprimerProduit(idArticleSupprimer, colors) {
-  console.log(colors); //----recup donnees local---- 
-  // ---Attention changer const en let pour pouvoir modifier les valeur dans la variable--- 
+  console.log(colors); //----recup donnees local----
+  // ---Attention changer const en let pour pouvoir modifier les valeur dans la variable---
 
-  var local = JSON.parse(localStorage.getItem("storageUserSelect")); //--boucle pour parcourir le local-- 
+  var local = JSON.parse(localStorage.getItem("storageUserSelect")); //--boucle pour parcourir le local--
 
   for (var i = 0; i < local.length; i++) {
     //---condition ( si id = id à supprimer et couleur du produit = couleur à supprimer)---
@@ -138,7 +138,7 @@ function supprimerProduit(idArticleSupprimer, colors) {
       local.splice(index, 1);
       localStorage.setItem("storageUserSelect", JSON.stringify(local));
     }
-  } //--rechargement de la page-- 
+  } //--rechargement de la page--
 
 
   window.location.reload();
@@ -163,7 +163,6 @@ btnFormEnvoie.addEventListener("click", function (event) {
     this.address = document.getElementById("address").value;
     this.city = document.getElementById("city").value;
     this.email = document.getElementById("email").value;
-    this.products = [];
   }; //appel de l'instance de la class "formulaire"
 
 
@@ -216,7 +215,7 @@ btnFormEnvoie.addEventListener("click", function (event) {
       return false;
     }
   } //--Adresse-- + --controle via Regex --
-  //--Regex directement dans la fonction adresse 
+  //--Regex directement dans la fonction adresse
 
 
   function adresseRegex() {
@@ -245,7 +244,7 @@ btnFormEnvoie.addEventListener("click", function (event) {
       return false;
     }
   } //--Email-- + --controle via Regex --
-  //--Regex directement dans la fonction Email-- 
+  //--Regex directement dans la fonction Email--
 
 
   function emailRegex() {
@@ -263,28 +262,35 @@ btnFormEnvoie.addEventListener("click", function (event) {
   /*---------------------------------Gestion du Local avec le Formulaire -----------------------------*/
 
   /*--------mettre l'objet "contact" dans le localStorage--- 
-   ---attention mettre l'objet en chaine de caractere "JSON STRINGIFY"--------*/
-  //creer un tableau de produits pour recuperer l'id 
+  ---attention mettre l'objet en chaine de caractere "JSON STRINGIFY"--------*/
+  //creer un tableau de produits pour recuperer l'id
   //--Ajout de la condition si le formulaire est bien rempli j'envoie l'objet sinon (non)---
 
 
   if (prenomRegex() && nomRegex() && adresseRegex() && villeRegex() && emailRegex()) {
     //--faire une boucle sur le local storage--
+    var productIDArray = [];
+
     for (y = 0; y < local.length; y++) {
       var produitsId = local[y].idProduit; //recup l'id dans local
 
-      contact.products.push(produitsId);
-    }
+      productIDArray.push(produitsId);
+    } //creaction de l'object form avec les données du formulaire et le tableau du produit contenant l'id
 
+
+    var form = {
+      contact: contact,
+      products: productIDArray
+    };
     console.log("contact");
     console.log(contact);
     /* ---------methode fetch POST-----*/
 
     fetch("http://localhost:3000/api/products/order", {
       method: "POST",
-      body: json.stringify(contact.formulaire),
+      body: JSON.stringify(form),
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json"
       }
     }).then(function (httpBodyResponse) {
       // fonction quand il recupere les donnees en httpBody
@@ -292,10 +298,10 @@ btnFormEnvoie.addEventListener("click", function (event) {
     }).then(function (data) {
       // recuperer le json renommé en "data"
       //return data;
-      console.log("data");
-      console.log(data); // reponse return le contenu json "data"
+      localStorage.setItem("storageUserSelect", JSON.stringify([]));
+      window.location.href = "confirmation.html?orderId=".concat(data.orderId);
     })["catch"](function (error) {
-      // si erreur fonction d'afficher une alert 'error' 
+      // si erreur fonction d'afficher une alert 'error'
       alert(error);
     });
   } else {

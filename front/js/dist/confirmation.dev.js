@@ -1,9 +1,16 @@
 "use strict";
 
-var pageConfirm = new URL(location.href).searchParams.get("id"); // Récupération de l'id de la commande présent dans l'url spécifique
+(function _callee() {
+  return regeneratorRuntime.async(function _callee$(_context) {
+    while (1) {
+      switch (_context.prev = _context.next) {
+        case 0:
+          document.getElementById("orderId").innerHTML = new URL(location.href).searchParams.get("orderId");
 
-var getResponseId = orderConfirm.searchParams.get("id"); // Injection de l'id dans le DOM
-
-document.querySelector("#orderId").innerText = getResponseId; // Vidage des données du local storage
-
-localStorage.removeItem("local");
+        case 1:
+        case "end":
+          return _context.stop();
+      }
+    }
+  });
+})(); // on appelle la fonction grace au parentaises
