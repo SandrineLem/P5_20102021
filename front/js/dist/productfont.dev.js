@@ -23,7 +23,8 @@
       }
     }
   });
-})();
+})(); //fonction pour creer l'url correspondant avec l'id du produit 
+
 
 function getArticleId() {
   return new URL(location.href).searchParams.get("id");
@@ -31,6 +32,7 @@ function getArticleId() {
 
 
 function verifLocalStorage() {
+  //transformation d'une chaine JSON en objet JAVASCRIPT (methode parse)
   var local = JSON.parse(localStorage.getItem("storageUserSelect"));
 
   if (local == null) {

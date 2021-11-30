@@ -7,11 +7,13 @@
     hydrateArticle(article)
     verifLocalStorage();// Ajout de la fonction verification du localStorage
 })()
+//fonction pour creer l'url correspondant avec l'id du produit 
 function getArticleId(){
     return new URL (location.href).searchParams.get("id")
 }
 // ------Ajouter les instruction pour la fonction verifLocalStorage------
 function verifLocalStorage(){ 
+    //transformation d'une chaine JSON en objet JAVASCRIPT (methode parse)
     const local = JSON.parse(localStorage.getItem("storageUserSelect"))
     if (local == null){ // --si il renvoie null-- 
         localStorage.setItem("storageUserSelect", JSON.stringify([]));

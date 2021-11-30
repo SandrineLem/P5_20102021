@@ -24,7 +24,9 @@ function getArticles(){
         alert(error)
     })
 }
-// utiliser notre fonction afficher les articles avec les donnees article (Json), Modification du dom avec innerHtml avec id item 
+
+// utiliser notre fonction afficher les articles avec les donnees article (Json), Modification du dom avec innerHtml avec id item
+// "${}" inclure les donnees du fichier article (json)
 function displayArticle(article){
     document.getElementById("items") .innerHTML += `<a href="product.html?id=${article._id}">
     <article>
@@ -33,4 +35,3 @@ function displayArticle(article){
       <p class="productDescription">${article.description}</p>
     </article></a>`
 }
-// "${}" inclure les donnees du fichier article (json)

@@ -97,24 +97,24 @@ function modifQuantitePanier() {
       let produitQuantite = quantiteModif.closest("article");
       let produitQuantiteId = produitQuantite.dataset.id;
       console.log(produitQuantiteId);
-      //----utilisation de  l'observation avec addEventListener pour voir le changement de la quantité----
-      quantiteModif.addEventListener("change", () => {
-          //---recup de la valeur de la quantite changee---
-          let newsQuantiteProduit = Number(quantiteModif.value);
-          console.log(newsQuantiteProduit);
-          //---utiliser le local cette fois si pour le mettre a jour de la nouvelle quantite---
-          local.forEach((ElemtNew) => {
-              if (ElemtNew.idProduit === produitQuantiteId) {
-                  ElemtNew.quantityUser = newsQuantiteProduit;
-              }
-          });
+      console.log(quantiteModif)
+
+    //---recup de la valeur de la quantite changee---
+        let newsQuantiteProduit = Number(quantiteModif.value);
+        console.log(newsQuantiteProduit);
+        //---utiliser le local cette fois si pour le mettre a jour de la nouvelle quantite---
+        local.forEach((ElemtNew) => {
+            if (ElemtNew.idProduit === produitQuantiteId) {
+                ElemtNew.quantityUser = newsQuantiteProduit;
+            }
+        });
           //---mettre a jour les données renvoyées dans le local---
           localStorage.setItem("storageUserSelect", JSON.stringify(local));
           //--rechargement de la page--
           window.location.reload();
       });
-  });
-}
+  }
+
 
 //--------creer une fonction pour supprimer id en fonction de sa couleur dans le local-------
 function supprimerProduit(idArticleSupprimer, colors) {

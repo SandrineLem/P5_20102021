@@ -83,9 +83,10 @@ function getArticles() {
     // si erreur fonction d'afficher une alert 'error' 
     alert(error);
   });
-} // utiliser notre fonction afficher les articles avec les donnees article (Json), Modification du dom avec innerHtml avec id item 
+} // utiliser notre fonction afficher les articles avec les donnees article (Json), Modification du dom avec innerHtml avec id item
+// "${}" inclure les donnees du fichier article (json)
 
 
 function displayArticle(article) {
   document.getElementById("items").innerHTML += "<a href=\"product.html?id=".concat(article._id, "\">\n    <article>\n      <img src=\"").concat(article.imageUrl, "\" alt=\"").concat(article.altTxt, "\">\n      <h3 class=\"productName\">").concat(article.name, "</h3>\n      <p class=\"productDescription\">").concat(article.description, "</p>\n    </article></a>");
-} // "${}" inclure les donnees du fichier article (json)
+}
