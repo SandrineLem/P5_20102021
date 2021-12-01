@@ -14,10 +14,10 @@
       //---si le panier n'est pas vide l'afficher dans le local storage---
       //--initialiser le total du prix du Panier--
       let prixTotalPanier = 0;
-      //--initialiser le total de la quantite de produit calcule dans le Panier--
+      //--initialiser le total de la quantite de produit calculé dans le Panier--
       let quantiteTotalCalculePanier = 0;
 
-      //--faire une boucle sur le local storage--
+      //--faire une boucle dans le local storage--
       for (y = 0; y < local.length; y++) {
           const idLocal = local[y].idProduit; //recup l'id dans local
           console.log(idLocal);
@@ -31,7 +31,7 @@
           //---calcul de la quantite total de produit dans le panier(addition de la quantite Total de produit + quantite du local)---
           quantiteTotalCalculePanier =
               quantiteTotalCalculePanier + parseInt(local[y].quantityUser);
-          //------insertion dans le dom des infos produit------
+          //------insertion dans le dom les infos produit (articleLocal)------
           document.getElementById(
               "cart__items"
           ).innerHTML += `<article class="cart__item" data-id="${idLocal}">
@@ -57,8 +57,8 @@
     </div>
   </article>`;
       }
-      //------insertion dans le dom du prix total du panier------
-      document.getElementById("totalPrice").innerHTML = prixTotalPanier + " €";
+      //------insertion dans le dom du prix total du panier + symbole "€" ------
+      document.getElementById("totalPrice").innerHTML = prixTotalPanier + " € ";
       //------insertion dans le dom de la quantite total calculee du panier------
       document.getElementById(
           "totalQuantity"
@@ -84,7 +84,7 @@ function getArticle(articleId) {
       });
 }
 
-//--------------creer une fonction pour modifier la quantité de produit dans la page panier-----------
+//--------------Fonction pour modifier la quantité de produit dans la page panier ( Ajouté dans le DOM )-----------
 function modifQuantitePanier() {
   // ----recuperer les donner dans le local----
   const local = JSON.parse(localStorage.getItem("storageUserSelect"));
@@ -92,17 +92,18 @@ function modifQuantitePanier() {
   //----selectionner les donnees des boutons quantite----
   let elmtQuantite = document.querySelectorAll(".itemQuantity");
   console.log(elmtQuantite);
+  //ForEach = pour chaque (remplace la boucle)
   elmtQuantite.forEach((quantiteModif) => {
-      //----recup la donnee du id et de la quantite----
+      //----recup la donnee du id et de la quantite "Le closest() méthode renvoie le premier ancêtre de l'élément sélectionné."----
       let produitQuantite = quantiteModif.closest("article");
       let produitQuantiteId = produitQuantite.dataset.id;
       console.log(produitQuantiteId);
       console.log(quantiteModif)
 
-    //---recup de la valeur de la quantite changee---
+    //---recup de la valeur de la quantite changée---
         let newsQuantiteProduit = Number(quantiteModif.value);
         console.log(newsQuantiteProduit);
-        //---utiliser le local cette fois si pour le mettre a jour de la nouvelle quantite---
+        //---utiliser le local cette fois si pour le mettre a jour de la nouvelle quantite avec la condition "si"---
         local.forEach((ElemtNew) => {
             if (ElemtNew.idProduit === produitQuantiteId) {
                 ElemtNew.quantityUser = newsQuantiteProduit;
@@ -116,7 +117,7 @@ function modifQuantitePanier() {
   }
 
 
-//--------creer une fonction pour supprimer id en fonction de sa couleur dans le local-------
+//--------Fonction pour supprimer id en fonction de sa couleur dans le local-------
 function supprimerProduit(idArticleSupprimer, colors) {
   console.log(colors);
   //----recup donnees local----
@@ -138,13 +139,19 @@ function supprimerProduit(idArticleSupprimer, colors) {
   window.location.reload();
 }
 
-/*------------------------------Fonction du formulaire------------------------------*/
+/*--------------------------------------------Fonction du formulaire------------------------------*/
+
+
 // ----recuperer les donner dans le local----
 const local = JSON.parse(localStorage.getItem("storageUserSelect"));
+
 //------recuperer les donnees saisies par l'utilisateur dans le formulaire -----
 //--Recuperer le bouton envoie des info du formulaire --
+
 let btnFormEnvoie = document.querySelector("#order");
-//-- Ecoute du bouton d'envoie du formulaire --
+
+//-- Ecoute au click du bouton (Commander!) lors de l'envoie du formulaire (methode "addEvenListener") --
+
 btnFormEnvoie.addEventListener("click", (event) => {
   event.preventDefault();
   //--Créer un "class "formulaire" pour stocker les donnees du formulaire----
@@ -162,9 +169,10 @@ btnFormEnvoie.addEventListener("click", (event) => {
   console.log(contact);
 
   /*----------------------------------------------Controle du Formulaire------------------------------- */
-  //--affichage des message d'alerte--
+
+  //--affichage des messages d'alerte en fonction des Regex --
   const affichageMsgAlert = (value) => {
-      return `${value} : Minimum 3 à 20 caractères Maximum autorisés.\nAttention les chiffres et les symboles sont non autorisés.`;
+      return `${value} : Minimum 3 à 20 caractères Maximum sont autorisés.\nAttention les chiffres et les symboles sont non autorisés.`;
   };
   const affichageMsgAdressAlert = (value) => {
       return `${value} : Veuillez commencer par renseigner le n° de la voie.\nPuis le type et le nom de la voie.\nMinimum de 3 à 30 caractères Maximum autorisés.\nAttention les symboles sont non autorisés.`;
@@ -173,6 +181,8 @@ btnFormEnvoie.addEventListener("click", (event) => {
   const affichageMsgEmailAlert = (value) => {
       return `${value} : Veuillez saisir une adresse mail valide \nAttention le symbole "@" et "." sont obligatoire et autorisés qu'une seule fois.\n L'Email doit se terminer minimum par 2 ou 3 caractères \nExemple : Abc@example.com ou 1b2c3@example.fr`;
   };
+
+  // ----------------------------------------REGEX + FONCTION CONTROLE DE LA VALIDATION DE CHAQUE CHAMP DU FORMULAIRE--------------
 
   //--Prenom-Nom-Ville Regex Controle--
   const prenomNomVilleRegex = (value) => {
@@ -288,7 +298,6 @@ btnFormEnvoie.addEventListener("click", (event) => {
           contact: contact,
           products: productIDArray,
       };
-
       console.log("contact");
       console.log(contact);
       /* ---------methode fetch POST-----*/
@@ -310,7 +319,7 @@ btnFormEnvoie.addEventListener("click", (event) => {
               window.location.href = `confirmation.html?orderId=${data.orderId}`;
           })
 
-      .catch(function(error) {
+           .catch(function(error) {
           // si erreur fonction d'afficher une alert 'error'
           alert(error);
       });

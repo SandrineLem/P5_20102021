@@ -1,8 +1,9 @@
 "use strict";
 
-//Fonction global "sans nom" qui fera tout le temps la meme chose
-//Fonction pour recuperer les donnees et les mettre dans le dom page accueil des le chargement de la page  
-// Fonction "getArticles pour 1 - Recup des articles 
+/* -------------------Fonction global "sans nom"  utilisant les fonctions pour afficher chaque article sur la page d'accueil -----------
+---------------------------cette fonction recupere les données , creer une boucle pour chaque article en utilisant------------
+----------------------------la fonction "Afficher les articles (displayArticle)" qui egalement les ajoutes au DOM ------*/
+// Fonction "getArticles pour Recup des articles 
 (function _callee() {
   var articles, _iteratorNormalCompletion, _didIteratorError, _iteratorError, _iterator, _step;
 
@@ -16,6 +17,7 @@
         case 2:
           articles = _context.sent;
           // ajout du await pour attendre les donnees pour le return fetch 
+          // boucle pour chaque article 
           _iteratorNormalCompletion = true;
           _didIteratorError = false;
           _iteratorError = undefined;
@@ -23,9 +25,8 @@
 
           for (_iterator = articles[Symbol.iterator](); !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
             article = _step.value;
-            // boucle article / article (du total des articles) 
-            displayArticle(article); // afficher tout les article(s)
-
+            // afficher tout les article(s)      
+            displayArticle(article);
             console.log(articles);
           }
 
@@ -68,8 +69,10 @@
       }
     }
   }, null, null, [[6, 10, 14, 22], [15,, 17, 21]]);
-})(); // on appelle la fonction grace au parentaises
-//Fonction pour recuperer les donnees de l API des articles 
+})(); // on appelle la fonction grace au ()
+
+/*--------------------------Les Fonctions à utiliser dans la fonction "Globale " pour afficher les articles sur la page d'accueil -----------*/
+//Fonction pour recuperer les donnees de l API des articles avec la methode fetch
 
 
 function getArticles() {
@@ -83,8 +86,8 @@ function getArticles() {
     // si erreur fonction d'afficher une alert 'error' 
     alert(error);
   });
-} // utiliser notre fonction afficher les articles avec les donnees article (Json), Modification du dom avec innerHtml avec id item
-// "${}" inclure les donnees du fichier article (json)
+} // utiliser notre fonction afficher les articles avec les donnees article (Json) qui modifie le  dom avec innerHtml avec id item
+// utiliser "${}" pour inclure les donnees du fichier article (json)
 
 
 function displayArticle(article) {

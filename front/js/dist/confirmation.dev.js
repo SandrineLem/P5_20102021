@@ -1,5 +1,6 @@
 "use strict";
 
+// Affichage "orderId " dans le dom en utilisant l'id  qui est le numero de commande validé !
 (function _callee() {
   return regeneratorRuntime.async(function _callee$(_context) {
     while (1) {

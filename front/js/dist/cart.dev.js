@@ -27,9 +27,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
         case 6:
           //---si le panier n'est pas vide l'afficher dans le local storage---
           //--initialiser le total du prix du Panier--
-          prixTotalPanier = 0; //--initialiser le total de la quantite de produit calcule dans le Panier--
+          prixTotalPanier = 0; //--initialiser le total de la quantite de produit calculé dans le Panier--
 
-          quantiteTotalCalculePanier = 0; //--faire une boucle sur le local storage--
+          quantiteTotalCalculePanier = 0; //--faire une boucle dans le local storage--
 
           y = 0;
 
@@ -52,7 +52,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
           prixTotalPanier = prixTotalPanier + parseInt(articleLocal.price) * parseInt(local[y].quantityUser); //---calcul de la quantite total de produit dans le panier(addition de la quantite Total de produit + quantite du local)---
 
-          quantiteTotalCalculePanier = quantiteTotalCalculePanier + parseInt(local[y].quantityUser); //------insertion dans le dom des infos produit------
+          quantiteTotalCalculePanier = quantiteTotalCalculePanier + parseInt(local[y].quantityUser); //------insertion dans le dom les infos produit (articleLocal)------
 
           document.getElementById("cart__items").innerHTML += "<article class=\"cart__item\" data-id=\"".concat(idLocal, "\">\n    <div class=\"cart__item__img\">\n      <img src=\"").concat(articleLocal.imageUrl, "\" alt=\"").concat(articleLocal.altTxt, "\">\n    </div>\n    <div class=\"cart__item__content\">\n      <div class=\"cart__item__content__titlePrice\">\n        <h2>").concat(articleLocal.name, "</h2>\n      <div class=\"item__content__settings__color\">\n          <h2>'").concat(local[y].colors, "'<h2>\n        <p>").concat(articleLocal.price, "\u20AC</p>\n      </div>\n      <div class=\"cart__item__content__settings\">\n        <div class=\"cart__item__content__settings__quantity\">\n          <p>Qt\xE9 :").concat(local[y].quantityUser, " </p>\n          <input type=\"number\" class=\"itemQuantity\" onChange=\"modifQuantitePanier()\" \"name=\"itemQuantity\" min=\"1\" max=\"100\" value=\"").concat(local[y].quantityUser, "\">\n        </div>\n        <div class=\"cart__item__content__settings__delete\">\n          <p class=\"deleteItem\" onClick=\"supprimerProduit('").concat(idLocal, "','").concat(local[y].colors, "')\">Supprimer</p>\n        </div>\n      </div>\n    </div>\n  </article>");
 
@@ -62,8 +62,8 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
           break;
 
         case 22:
-          //------insertion dans le dom du prix total du panier------
-          document.getElementById("totalPrice").innerHTML = prixTotalPanier + " €"; //------insertion dans le dom de la quantite total calculee du panier------
+          //------insertion dans le dom du prix total du panier + symbole "€" ------
+          document.getElementById("totalPrice").innerHTML = prixTotalPanier + " € "; //------insertion dans le dom de la quantite total calculee du panier------
 
           document.getElementById("totalQuantity").innerHTML = quantiteTotalCalculePanier;
 
@@ -88,7 +88,7 @@ function getArticle(articleId) {
     //-- si erreur fonction d'afficher une alert 'error'---
     alert(error);
   });
-} //--------------creer une fonction pour modifier la quantité de produit dans la page panier-----------
+} //--------------Fonction pour modifier la quantité de produit dans la page panier ( Ajouté dans le DOM )-----------
 
 
 function modifQuantitePanier() {
@@ -96,16 +96,17 @@ function modifQuantitePanier() {
   var local = JSON.parse(localStorage.getItem("storageUserSelect")); //----selectionner les donnees des boutons quantite----
 
   var elmtQuantite = document.querySelectorAll(".itemQuantity");
-  console.log(elmtQuantite);
+  console.log(elmtQuantite); //ForEach = pour chaque (remplace la boucle)
+
   elmtQuantite.forEach(function (quantiteModif) {
-    //----recup la donnee du id et de la quantite----
+    //----recup la donnee du id et de la quantite "Le closest() méthode renvoie le premier ancêtre de l'élément sélectionné."----
     var produitQuantite = quantiteModif.closest("article");
     var produitQuantiteId = produitQuantite.dataset.id;
     console.log(produitQuantiteId);
-    console.log(quantiteModif); //---recup de la valeur de la quantite changee---
+    console.log(quantiteModif); //---recup de la valeur de la quantite changée---
 
     var newsQuantiteProduit = Number(quantiteModif.value);
-    console.log(newsQuantiteProduit); //---utiliser le local cette fois si pour le mettre a jour de la nouvelle quantite---
+    console.log(newsQuantiteProduit); //---utiliser le local cette fois si pour le mettre a jour de la nouvelle quantite avec la condition "si"---
 
     local.forEach(function (ElemtNew) {
       if (ElemtNew.idProduit === produitQuantiteId) {
@@ -117,7 +118,7 @@ function modifQuantitePanier() {
 
     window.location.reload();
   });
-} //--------creer une fonction pour supprimer id en fonction de sa couleur dans le local-------
+} //--------Fonction pour supprimer id en fonction de sa couleur dans le local-------
 
 
 function supprimerProduit(idArticleSupprimer, colors) {
@@ -141,14 +142,14 @@ function supprimerProduit(idArticleSupprimer, colors) {
 
   window.location.reload();
 }
-/*------------------------------Fonction du formulaire------------------------------*/
+/*--------------------------------------------Fonction du formulaire------------------------------*/
 // ----recuperer les donner dans le local----
 
 
 var local = JSON.parse(localStorage.getItem("storageUserSelect")); //------recuperer les donnees saisies par l'utilisateur dans le formulaire -----
 //--Recuperer le bouton envoie des info du formulaire --
 
-var btnFormEnvoie = document.querySelector("#order"); //-- Ecoute du bouton d'envoie du formulaire --
+var btnFormEnvoie = document.querySelector("#order"); //-- Ecoute au click du bouton (Commander!) lors de l'envoie du formulaire (methode "addEvenListener") --
 
 btnFormEnvoie.addEventListener("click", function (event) {
   event.preventDefault(); //--Créer un "class "formulaire" pour stocker les donnees du formulaire----
@@ -167,10 +168,10 @@ btnFormEnvoie.addEventListener("click", function (event) {
   var contact = new formulaire();
   console.log(contact);
   /*----------------------------------------------Controle du Formulaire------------------------------- */
-  //--affichage des message d'alerte--
+  //--affichage des messages d'alerte en fonction des Regex --
 
   var affichageMsgAlert = function affichageMsgAlert(value) {
-    return "".concat(value, " : Minimum 3 \xE0 20 caract\xE8res Maximum autoris\xE9s.\nAttention les chiffres et les symboles sont non autoris\xE9s.");
+    return "".concat(value, " : Minimum 3 \xE0 20 caract\xE8res Maximum sont autoris\xE9s.\nAttention les chiffres et les symboles sont non autoris\xE9s.");
   };
 
   var affichageMsgAdressAlert = function affichageMsgAdressAlert(value) {
@@ -179,7 +180,8 @@ btnFormEnvoie.addEventListener("click", function (event) {
 
   var affichageMsgEmailAlert = function affichageMsgEmailAlert(value) {
     return "".concat(value, " : Veuillez saisir une adresse mail valide \nAttention le symbole \"@\" et \".\" sont obligatoire et autoris\xE9s qu'une seule fois.\n L'Email doit se terminer minimum par 2 ou 3 caract\xE8res \nExemple : Abc@example.com ou 1b2c3@example.fr");
-  }; //--Prenom-Nom-Ville Regex Controle--
+  }; // ----------------------------------------REGEX + FONCTION CONTROLE DE LA VALIDATION DE CHAQUE CHAMP DU FORMULAIRE--------------
+  //--Prenom-Nom-Ville Regex Controle--
 
 
   var prenomNomVilleRegex = function prenomNomVilleRegex(value) {
