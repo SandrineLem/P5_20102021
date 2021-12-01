@@ -312,6 +312,7 @@ btnFormEnvoie.addEventListener("click", (event) => {
               return httpBodyResponse.json(); // transfromation de httpBody  en json
           })
           .then(function(data) {
+              // revenir à l'etat initial du local (vider le local)
               // recuperer le json renommé en "data"
               //return data;
               localStorage.setItem("storageUserSelect", JSON.stringify([]));
