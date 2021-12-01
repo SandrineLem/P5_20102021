@@ -79,7 +79,6 @@ function getArticle(articleId) {
       })
       .catch(function(error) {
           //-- si erreur fonction d'afficher une alert 'error'---
-
           alert(error);
       });
 }
@@ -318,11 +317,10 @@ btnFormEnvoie.addEventListener("click", (event) => {
               localStorage.setItem("storageUserSelect", JSON.stringify([]));
               window.location.href = `confirmation.html?orderId=${data.orderId}`;
           })
-
-           .catch(function(error) {
+          .catch(function(error) {
           // si erreur fonction d'afficher une alert 'error'
           alert(error);
-      });
+          });
   } else {
       alert("Veuillez bien remplir les champs du formulaire avant de commander.");
   }
