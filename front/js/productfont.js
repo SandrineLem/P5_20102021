@@ -3,7 +3,7 @@
 /* -------------------Fonction global "sans nom"  pour recuperer l'id du produit dans l'url (fonction: getArticleId) -----------
 ---------------------------Recupere les données de l'api de chaque article grace à l'ajout de l'id du produit fonction(getArticle)------------
 --------------------------------Affiche les produits + ajoute les information au DOMgrace à la fonction (hydrateArticle)"------ 
----------------------------------- Vrefifie si les données sont bien presentes dans le localStorage sinon les ajouter ----------*/
+---------------------------------- Verififie si les données sont bien presentes dans le localStorage sinon les ajouter ----------*/
 
 (async function(){
     const articleId = getArticleId()
@@ -72,7 +72,7 @@ function getArticle(articleId){
 -----------------------convertir la quantité en nombre grace a (parseInt) ---------------
 ----------------------------------Envoyé l'objet dans le local --------------
 --------------------Ajouter les instructions des conditions d'affichage du produit-----------
-------------------------(même couleur + meme id alors addictioner seulement la quantité ---------
+------------------------(même couleur + meme id alors addictioner seulement la quantité)---------
     -----------------------------------mise a jours du localStorage-----------*/
 
 
@@ -100,7 +100,7 @@ addToCart.onclick = () =>{
         console.log(local);
        
     }else{//sinon si le produit existe
-        //chercher la valeur  (si même couleur et même id prodrui)
+        //chercher la valeur  (si même couleur et même id prodruit)
         let index = local.findIndex((x) => x.idProduit === id && x.colors === colors.value);
         if (index === -1){
             let userSelect = {

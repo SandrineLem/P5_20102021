@@ -3,7 +3,7 @@
 /* -------------------Fonction global "sans nom"  pour recuperer l'id du produit dans l'url (fonction: getArticleId) -----------
 ---------------------------Recupere les données de l'api de chaque article grace à l'ajout de l'id du produit fonction(getArticle)------------
 --------------------------------Affiche les produits + ajoute les information au DOMgrace à la fonction (hydrateArticle)"------ 
----------------------------------- Vrefifie si les données sont bien presentes dans le localStorage sinon les ajouter ----------*/
+---------------------------------- Verififie si les données sont bien presentes dans le localStorage sinon les ajouter ----------*/
 (function _callee() {
   var articleId, article;
   return regeneratorRuntime.async(function _callee$(_context) {
@@ -81,7 +81,7 @@ function hydrateArticle(article) {
 -----------------------convertir la quantité en nombre grace a (parseInt) ---------------
 ----------------------------------Envoyé l'objet dans le local --------------
 --------------------Ajouter les instructions des conditions d'affichage du produit-----------
-------------------------(même couleur + meme id alors addictioner seulement la quantité ---------
+------------------------(même couleur + meme id alors addictioner seulement la quantité)---------
     -----------------------------------mise a jours du localStorage-----------*/
 // Recupérer et stocker l'id du produit dans une const
 
@@ -111,7 +111,7 @@ addToCart.onclick = function () {
     console.log(local);
   } else {
     //sinon si le produit existe
-    //chercher la valeur  (si même couleur et même id prodrui)
+    //chercher la valeur  (si même couleur et même id prodruit)
     var index = local.findIndex(function (x) {
       return x.idProduit === id && x.colors === colors.value;
     });

@@ -128,7 +128,7 @@ function supprimerProduit(idArticleSupprimer, colors) {
       let index = local.findIndex(
           (elmt) => elmt.idProduit === idArticleSupprimer && elmt.colors === colors
       );
-
+        //alors tu suprime dans le local avec la methode splice 
       if (index !== -1) {
           local.splice(index, 1);
           localStorage.setItem("storageUserSelect", JSON.stringify(local));

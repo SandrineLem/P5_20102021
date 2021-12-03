@@ -131,7 +131,7 @@ function supprimerProduit(idArticleSupprimer, colors) {
     //---condition ( si id = id à supprimer et couleur du produit = couleur à supprimer)---
     var index = local.findIndex(function (elmt) {
       return elmt.idProduit === idArticleSupprimer && elmt.colors === colors;
-    });
+    }); //alors tu suprime dans le local avec la methode splice 
 
     if (index !== -1) {
       local.splice(index, 1);
